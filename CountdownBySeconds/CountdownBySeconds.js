@@ -8,9 +8,12 @@ const timeout = 999;
 
 // A simple #Countdown by seconds.
 class CountdownBySeconds extends React.Component {
-	state = {
-		seconds: props.seconds || 5,
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			seconds: props.seconds || 5,
+		};
+	}
 
 	componentWillMount() {
 		this.mTimer = setTimeout(this.doCountDown, timeout);
@@ -25,7 +28,7 @@ class CountdownBySeconds extends React.Component {
 		if (this.mTimer) {clearTimeout(this.mTimer);}
 		if (seconds <= 0) {return;}
 		this.setState({
-			seconds: seconds - 1
+			seconds: seconds - 1,
 		});
 		this.mTimer = setTimeout(this.doCountDown, timeout);
 	};
