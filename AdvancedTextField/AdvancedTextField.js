@@ -20,7 +20,18 @@ const TIME_DELAY = 45;
 // Think about the differences(logical meanings and etc) about label, placeholder, helper text, and error text.
 // @see https://material.io/guidelines/components/text-fields.html
 class AdvancedTextField extends React.PureComponent {
+	static getDerivedStateFromProps(nextProps, prevState) {
+		const {_session_id} = prevState;
+		const {_session_id: nextSessionId} = nextProps;
+		if (_session_id !== nextSessionId) {
+			// Reset the state on the _session_id changed.
+			return {isEdited: false, _session_id: nextSessionId};
+		}
+		return null;
+	}
+
 	state = {
+		_session_id: null,
 		// Is the TextField currently active?
 		isFocusing: false,
 		// Is once blurred.
@@ -88,6 +99,8 @@ AdvancedTextField.propTypes = {
 	showErrorTextWhenFocusing: PropTypes.bool,
 	errorText: PropTypes.string,
 	...TextField.propTypes,
+	// Pass a different _session_id here to reset the state of the #edited status.
+	_session_id: PropTypes.any,
 };
 
 export default AdvancedTextField;
