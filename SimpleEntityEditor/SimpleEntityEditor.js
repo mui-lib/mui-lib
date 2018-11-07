@@ -7,6 +7,10 @@ import PropTypes from 'prop-types';
 // Different sessions will be used for different target entities.
 let _session_id = 1;
 
+const TYPE_CHECKBOX = 'checkbox';
+// A kind of #Checkbox.
+const TYPE_SWITCH = 'switch';
+
 // A custom entity editor/form consisting of configurable components for entity fields, which calls the
 // props#onPatchChange() with the latest #entityPatch when any field is going to be updated.
 //
@@ -26,9 +30,16 @@ class SimpleEntityEditor extends React.PureComponent {
 		_target_entity: null,
 	};
 
-	onValueChange = ({target: {id, name, value}} = {}) => {
-		if (!id) {console.warn(`The id of target is empty, id: [${id}]; name: [${name}].`);}
-		if (!id) {id = name;}
+	onValueChange = ({target: {id, name, value, type, checked} = {}} = {}) => {
+		if (!id) {
+			if (!name) {
+				console.error(`Both id and name of target are empty, id: [${id}]; name: [${name}].`);
+			} else {
+				id = name;
+				console.warn(`The id of target is empty, id: [${id}] using target.name as the id: [${name}].`);
+			}
+		}
+		if (type === TYPE_CHECKBOX) {value = checked;}
 		const {onPatchChange, targetEntity, entityPatch} = this.props;
 		if (targetEntity[id] === value) {
 			delete entityPatch[id];
@@ -61,8 +72,19 @@ class SimpleEntityEditor extends React.PureComponent {
 			FieldEditor = this.props.Selector;
 			if (!FieldEditor) {console.warn('The expected #Selector is not loaded!');}
 		} else {
-			FieldEditor = this.props.TextField;
-			if (!FieldEditor) {console.warn('The expected #TextField is not loaded!');}
+			switch ((props.type || '').toLowerCase()) {
+				case TYPE_CHECKBOX:
+					FieldEditor = this.props.Checkbox;
+					if (!FieldEditor) {console.warn('The expected #Checkbox is not loaded!');}
+					break;
+				case TYPE_SWITCH:
+					FieldEditor = this.props.Switch;
+					if (!FieldEditor) {console.warn('The expected #Switch is not loaded!');}
+					break;
+				default:
+					FieldEditor = this.props.TextField;
+					if (!FieldEditor) {console.warn('The expected #TextField is not loaded!');}
+			}
 		}
 		// break;
 		// }
@@ -99,12 +121,21 @@ SimpleEntityEditor.propTypes = {
 	onPatchChange: PropTypes.func.isRequired,
 	// Fields of the entity that to be handled.
 	entityFields: PropTypes.array.isRequired,
-	TextField: PropTypes.func,
-	Selector: PropTypes.func,
-	TextFieldWithSuggestions: PropTypes.func,
 	// The expected action is updating an entity if the targetEntity._id or targetEntity.id is set.
 	targetEntity: PropTypes.object.isRequired,
 	entityPatch: PropTypes.object,
+
+	// - The component used for unspecified fields.
+	// - The default component used when other components is not correctly loaded.
+	TextField: PropTypes.func,
+	// Being used when props.type equals to 'switch'.
+	Switch: PropTypes.func,
+	// Being used when props.type equals to 'checkbox'.
+	Checkbox: PropTypes.func,
+	// Being used when props.values exists.
+	Selector: PropTypes.func,
+	// Being used when props.suggestions exists.
+	TextFieldWithSuggestions: PropTypes.func,
 };
 
 export default SimpleEntityEditor;
