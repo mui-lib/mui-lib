@@ -1,73 +1,84 @@
 'use strict';
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 
+interface IProps {
+	disabled?: boolean;
+	buttonText: string;
+	buttonProps?: IButtonProps;
+	// Dialog configurations.
+	dialogTitle: string;
+	// dialogDescription?: string;
+	buttonConfirmText: string;
+	buttonCancelText?: string;
+	onConfirm: () => any;
+	// onCancel?: () => any;
+}
+
+interface IButtonProps {
+	// import {PropTypes} from '@material-ui/core';
+	color?: 'inherit' | 'primary' | 'secondary' | 'default';
+	disableFocusRipple?: boolean;
+	fullWidth?: boolean;
+	href?: string;
+	size?: 'small' | 'medium' | 'large';
+	variant?: 'text' | 'outlined' | 'contained';
+}
+
 // Rendering a button triggering a dialog to confirm something.
 //
+// FIX-ME It is duplicate with the #ButonDialog.
+//
 // The state of dialog switch is uncontrolled.
-class DialogToConfirm extends React.Component {
-	state = {
-		dialogSwitch: false,
-	};
+const TheDialogToConfirm = (props: IProps) => {
+	const {dialogTitle, buttonConfirmText, buttonCancelText, disabled, buttonText, buttonProps} = props;
 
-	onOpenDialog = () => this.setState({dialogSwitch: true});
-	onCloseDialog = () => this.setState({dialogSwitch: false});
+	const [dialogSwitch, setDialogSwitch] = useState(false);
 
-	onConfirm = () => {
-		const {onConfirm} = this.props;
-		this.onCloseDialog();
+	const onOpenDialog = () => setDialogSwitch(true);
+	const onCloseDialog = () => setDialogSwitch(false);
+
+	const onConfirm = () => {
+		const {onConfirm} = props;
+		onCloseDialog();
 		onConfirm();
 	};
 
 	// <DialogContent>
 	//      <DialogContentText id='alert-dialog-description'></DialogContentText>
 	// </DialogContent>
-	renderDialog = ({classes, dialogTitle, buttonConfirmText, buttonCancelText} = this.props, {dialogSwitch} = this.state) => {
+	const renderDialog = () => {
 		return (
-			<Dialog open={dialogSwitch} onClose={this.onCloseDialog}>
+			<Dialog open={dialogSwitch} onClose={onCloseDialog}>
 				<DialogTitle>{dialogTitle}</DialogTitle>
 				<DialogActions>
-					{buttonCancelText ? <Button onClick={this.onCloseDialog}>{buttonCancelText}</Button> : undefined}
-					<Button onClick={this.onConfirm} color='primary'>{buttonConfirmText}</Button>
+					{buttonCancelText ? <Button onClick={onCloseDialog}>{buttonCancelText}</Button> : undefined}
+					<Button onClick={onConfirm} color='primary'>{buttonConfirmText}</Button>
 				</DialogActions>
 			</Dialog>
 		);
 	};
 
-	renderActionButton = ({classes, disabled, buttonText, buttonProps} = this.props) => {
+	const renderActionButton = () => {
 		return (
-			<Button {...buttonProps} disabled={disabled} onClick={this.onOpenDialog}>
+			<Button disabled={disabled} onClick={onOpenDialog} {...buttonProps}>
 				{buttonText}
 			</Button>
 		);
 	};
 
-	render() {
-		const {dialogSwitch} = this.state;
-		return (
-			<div style={{display: 'inline-block'}}>
-				{dialogSwitch ? this.renderDialog() : undefined}
-				{this.renderActionButton()}
-			</div>
-		);
-	}
-}
-
-DialogToConfirm.propTypes = {
-	buttonText: PropTypes.string.isRequired,
-	buttonProps: PropTypes.object,
-	disabled: PropTypes.bool,
-	onConfirm: PropTypes.func.isRequired,
-	// Dialog configurations.
-	dialogTitle: PropTypes.string.isRequired,
-	buttonConfirmText: PropTypes.string.isRequired,
-	buttonCancelText: PropTypes.string,
+	// Consider the animation of the dialog and the mount/unmount performance.
+	if (!dialogSwitch) {return renderActionButton();}
+	return (
+		<div style={{display: 'inline-block'}}>
+			{dialogSwitch ? renderDialog() : undefined}
+			{renderActionButton()}
+		</div>
+	);
 };
 
-export default DialogToConfirm;
-
+export const DialogToConfirm: React.FC<IProps> = React.memo<IProps>(TheDialogToConfirm);

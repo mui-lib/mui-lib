@@ -1,32 +1,33 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox, {CheckboxProps} from '@material-ui/core/Checkbox';
 
-class FieldCheckbox extends React.PureComponent {
-	render() {
-		const {label, disabled, value, type, ...props} = this.props;
-		// Extract type = 'checkbox' from props.
-		return (
-			<FormControlLabel
-				label={label}
-				disabled={disabled}
-				control={
-					<Checkbox
-						{...props}
-						checked={value || false}
-					/>
-				}
-			/>
-		);
-	}
+interface IProps extends CheckboxProps {
+	label: string;
+	value: boolean;
+	// @see #FormControlLabelProps
+	labelPlacement?: 'end' | 'start' | 'top' | 'bottom';
 }
 
-FieldCheckbox.propTypes = {
-	...Checkbox.propTypes,
-	label: PropTypes.string.isRequired,
+const TheFieldCheckbox = (props: IProps) => {
+	const {label, labelPlacement, disabled, value, type, ...others} = props;
+	// Extract type = 'checkbox' from props.
+
+	return (
+		<FormControlLabel
+			label={label}
+			disabled={disabled}
+			labelPlacement={labelPlacement}
+			control={
+				<Checkbox
+					{...others}
+					checked={value || false}
+				/>
+			}
+		/>
+	);
 };
 
-export default FieldCheckbox;
+export const FieldCheckbox: React.FC<IProps> = React.memo<IProps>(TheFieldCheckbox);

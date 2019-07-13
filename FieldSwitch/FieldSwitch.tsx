@@ -1,32 +1,32 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
+import Switch, {SwitchProps} from '@material-ui/core/Switch';
 
-class FieldSwitch extends React.PureComponent {
-	render() {
-		const {label, disabled, value, type, ...props} = this.props;
-		// Extract type = 'switch' from props.
-		return (
-			<FormControlLabel
-				label={label}
-				disabled={disabled}
-				control={
-					<Switch
-						{...props}
-						checked={value || false}
-					/>
-				}
-			/>
-		);
-	}
+interface IProps extends SwitchProps {
+	label: string;
+	value: boolean;
+	// @see #FormControlLabelProps
+	labelPlacement?: 'end' | 'start' | 'top' | 'bottom';
 }
 
-FieldSwitch.propTypes = {
-	...Switch.propTypes,
-	label: PropTypes.string.isRequired,
+const TheFieldSwitch = (props: IProps) => {
+	const {label, labelPlacement, disabled, value, type, ...others} = props;
+	// Extract type = 'switch' from props.
+	return (
+		<FormControlLabel
+			label={label}
+			disabled={disabled}
+			labelPlacement={labelPlacement}
+			control={
+				<Switch
+					{...others}
+					checked={value || false}
+				/>
+			}
+		/>
+	);
 };
 
-export default FieldSwitch;
+export const FieldSwitch: React.FC<IProps> = React.memo<IProps>(TheFieldSwitch);
