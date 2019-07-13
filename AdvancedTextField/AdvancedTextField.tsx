@@ -1,8 +1,26 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
+import TextField, {StandardTextFieldProps} from '@material-ui/core/TextField';
+// import {ISharedFieldProps} from 'src/EntityEditorExample/components/SimpleEntityEditor/SimpleEntityEditor';
+
+// export interface IProps1 extends IRawProps, StandardTextFieldProps {}
+export interface IRawProps extends StandardTextFieldProps {
+	// Pass a different _session_id here to reset the state of the #edited status.
+	_session_id?: string | number,
+	label: React.ReactNode;
+	// Whether to show the helper text when not focusing.
+	showHelperTextWhenNotFocusing?: boolean;
+	// Whether to show the error text when focusing.
+	showErrorTextWhenFocusing?: boolean,
+	errorText?: string;
+}
+
+export interface IState {
+	_session_id?: string | number,
+	isFocusing: boolean;
+	isEdited: boolean;
+}
 
 // Delay to commit changes since the changes serially is not expected to be updated.
 // @see https://gamedev.stackexchange.com/questions/74973/maximum-audio-delay-before-the-player-notices
@@ -19,8 +37,8 @@ const TIME_DELAY = 45;
 //
 // Think about the differences(logical meanings and etc) about label, placeholder, helper text, and error text.
 // @see https://material.io/guidelines/components/text-fields.html
-class AdvancedTextField extends React.PureComponent {
-	static getDerivedStateFromProps(nextProps, prevState) {
+export class AdvancedTextField extends React.PureComponent<IRawProps> {
+	static getDerivedStateFromProps(nextProps: IRawProps, prevState: IState) {
 		const {_session_id} = prevState;
 		const {_session_id: nextSessionId} = nextProps;
 		if (_session_id !== nextSessionId) {
@@ -30,13 +48,17 @@ class AdvancedTextField extends React.PureComponent {
 		return null;
 	}
 
-	state = {
-		_session_id: null,
+	state: IState = {
+		_session_id: undefined,
 		// Is the TextField currently active?
 		isFocusing: false,
 		// Is once blurred.
 		isEdited: false,
 	};
+
+	mTimer: number;
+	otherOnBlur?: (param: any) => void;
+	otherOnFocus?: (param: any) => void;
 
 	componentWillUnmount() {
 		if (this.mTimer) {clearTimeout(this.mTimer);}
@@ -44,7 +66,7 @@ class AdvancedTextField extends React.PureComponent {
 
 	// this.setState({isFocusing: true, isEdited: true}, () => this.otherOnFocus && this.otherOnFocus(event));
 	// if (this.otherOnFocus) {setTimeout(() => this.otherOnFocus(event), 0);}
-	onFocus = (event) => {
+	onFocus = (event: any) => {
 		this.otherOnFocus && this.otherOnFocus(event);
 		if (this.mTimer) {clearTimeout(this.mTimer);}
 		setTimeout(() => this.setState({isFocusing: true, isEdited: true}), TIME_DELAY);
@@ -52,7 +74,7 @@ class AdvancedTextField extends React.PureComponent {
 
 	// this.setState({isFocusing: false, isEdited: true}, () => this.otherOnBlur && this.otherOnBlur(event));
 	// if (this.otherOnBlur) {setTimeout(() => this.otherOnBlur(event), 0);}
-	onBlur = (event) => {
+	onBlur = (event: any) => {
 		this.otherOnBlur && this.otherOnBlur(event);
 		if (this.mTimer) {clearTimeout(this.mTimer);}
 		setTimeout(() => this.setState({isFocusing: false, isEdited: true}), TIME_DELAY);
@@ -66,8 +88,8 @@ class AdvancedTextField extends React.PureComponent {
 		if (onBlur) {this.otherOnBlur = onBlur;}
 		if (InputProps) {
 			// Use different listeners instead of the ones from the 3rd party.
-			const {onFocus, onBlur, ...other} = InputProps;
-			others.InputProps = other;
+			const {onFocus, onBlur} = InputProps;
+			// others.InputProps = other; //, ...other
 			if (onFocus) {this.otherOnFocus = onFocus;}
 			if (onBlur) {this.otherOnBlur = onBlur;}
 		}
@@ -91,16 +113,3 @@ class AdvancedTextField extends React.PureComponent {
 		);
 	}
 }
-
-AdvancedTextField.propTypes = {
-	// Whether to show the helper text when not focusing.
-	showHelperTextWhenNotFocusing: PropTypes.bool,
-	// Whether to show the error text when focusing.
-	showErrorTextWhenFocusing: PropTypes.bool,
-	errorText: PropTypes.string,
-	...TextField.propTypes,
-	// Pass a different _session_id here to reset the state of the #edited status.
-	_session_id: PropTypes.any,
-};
-
-export default AdvancedTextField;

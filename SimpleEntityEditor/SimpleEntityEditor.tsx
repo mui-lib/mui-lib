@@ -1,7 +1,10 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import TextField from '@material-ui/core/TextField';
+import {FilledInputProps} from '@material-ui/core/FilledInput';
+
+// import {FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps} from '@material-ui/core/TextField/TextField';
 
 // Pass a different _session_id to reset states of the #AdvancedTextField which holds the state of the #edited status.
 // Different sessions will be used for different target entities.
@@ -11,12 +14,127 @@ const TYPE_CHECKBOX = 'checkbox';
 // A kind of #Checkbox.
 const TYPE_SWITCH = 'switch';
 
+export interface IEnvironment {
+	isCreating: boolean;
+	// The updated entity.
+	entity: any;
+}
+
+export type IFieldTypeText = 'string' | 'number' | 'password'
+export type IFieldTypeSingleSelector = 'radio' | 'selector'
+export type IFieldTypeMultipleSelector = 'checkbox'
+// export type IFieldType = 'string' | 'number' | 'password' | 'checkbox' | 'radio' | 'selector'
+export type IFieldType = IFieldTypeText | IFieldTypeSingleSelector | IFieldTypeMultipleSelector | 'suggestions'
+export type IFieldMargin = 'dense'
+export type IFieldAutoComplete = 'off'
+
+export interface ISelectorItem {
+	label: string;
+	value: string;
+}
+
+// As an field of a group of fields(an entity), which works for custom components/wrappers overriding the given components by #mui, like #AdvancedTextField, #TextFieldWithSuggestions, #Selectors, #GroupedCheckboxes, #GroupedRadios, and etc.
+export interface ISharedFieldProps {
+	id: string;
+	label: string;
+	type?: IFieldType;
+	placeholder?: string;
+	multiline?: boolean;
+
+	fullWidth?: boolean;
+	margin?: IFieldMargin;
+	autoComplete?: IFieldAutoComplete;
+
+	required?: boolean;
+	helperText?: string;
+	errorText?: string;
+
+	// 提示输入
+	suggestions?: any;
+}
+
+// As the field wrapper
+export interface IEntityFieldWrapper extends ISharedFieldProps {
+	onBlur?: React.EventHandler<any>;
+	onFocus?: React.EventHandler<any>;
+	InputProps?: Partial<FilledInputProps>;
+
+	onChange: (event: { target: IInputDom }) => void;
+}
+
+// Define fields and get corresponding implementations by #SimpleEntityEditor.
+export interface IBaseFieldDefinition extends ISharedFieldProps {
+	_session_id?: string | number,
+	default?: string;
+
+	getLabel?: (env?: IEnvironment, field?: IFieldDefinition, value?: string) => string;
+	getPlaceholder?: (env?: IEnvironment, field?: IFieldDefinition, value?: string) => string;
+	getHelperText?: (env?: IEnvironment, field?: IFieldDefinition, value?: string) => string;
+	getErrorText: (value?: any, env?: IEnvironment, field?: IFieldDefinition) => string | undefined;
+}
+
+export interface IInputFieldDefinition extends IBaseFieldDefinition {
+	type: IFieldTypeText;
+}
+
+// Options for grouped checkbox.
+export interface IMultipleSelectorFieldDefinition extends IBaseFieldDefinition {
+	type: IFieldTypeMultipleSelector;
+	// 多项选择框(勾选框)
+	values?: ISelectorItem[];
+	minimum?: number;
+	minimumErrorText?: string;
+	maximum?: number;
+	maximumErrorText?: string;
+}
+
+export interface ISingleSelectorFieldDefinition extends IBaseFieldDefinition {
+	// 下拉框、单选框
+	type: IFieldTypeSingleSelector;
+	values?: ISelectorItem[];
+}
+
+export interface ISuggestionFieldDefinition extends IBaseFieldDefinition {
+	// 下拉框、单选框
+	type: 'suggestions';
+}
+
+export type IFieldDefinition = IInputFieldDefinition | IMultipleSelectorFieldDefinition | ISingleSelectorFieldDefinition | ISuggestionFieldDefinition
+
+export interface IInputDom {
+	id: string;
+	name?: string;
+	value: any;
+}
+
+export interface IProps {
+	_session_id?: string | number,
+	onPatchChange: (patch: any) => void,
+	// Fields of the entity that to be handled.
+	entityFields: IFieldDefinition[],
+	// - The component used for unspecified fields.
+	// - The default component used when other components is not correctly loaded.
+	TextField?: React.ReactNode,
+	Selector?: React.ReactNode,
+	Checkbox?: React.ReactNode,
+	Switch?: React.ReactNode,
+	TextFieldWithSuggestions?: React.ReactNode,
+	// The expected action is updating an entity if the targetEntity._id is set.
+	targetEntity: any;
+	entityPatch?: any;
+}
+
+export interface IState {
+	_session_id?: string | number,
+	_target_entity: null,
+}
+
 // A custom entity editor/form consisting of configurable components for entity fields, which calls the
 // props#onPatchChange() with the latest #entityPatch when any field is going to be updated.
 //
 // Think about whether to extend #PureComponent or not, and currently use #PureComponent(performance, logically correctness).
-class SimpleEntityEditor extends React.PureComponent {
-	static getDerivedStateFromProps(nextProps, prevState) {
+export class SimpleEntityEditor extends React.Component<IProps> {
+	static getDerivedStateFromProps(nextProps: IProps, prevState: IState) {
 		const {_target_entity} = prevState;
 		const {targetEntity} = nextProps;
 		if (_target_entity !== targetEntity) {
@@ -26,20 +144,22 @@ class SimpleEntityEditor extends React.PureComponent {
 		return null;
 	}
 
-	state = {
+	state: IState = {
+		_session_id: _session_id,
 		_target_entity: null,
 	};
 
-	onValueChange = ({target: {id, name, value, type, checked} = {}} = {}) => {
+	onValueChange = ({target: {id, name, value, type, checked} = {} as any} = {}) => {
 		if (!id) {
 			if (!name) {
 				console.error(`Both id and name of target are empty, id: [${id}]; name: [${name}].`);
+				return;
 			} else {
 				id = name;
 				console.warn(`The id of target is empty, id: [${id}] using target.name as the id: [${name}].`);
 			}
 		}
-		if (type === TYPE_CHECKBOX) {value = checked;}
+		if (type === TYPE_CHECKBOX || type === TYPE_SWITCH) {value = checked;}
 		const {onPatchChange, targetEntity, entityPatch} = this.props;
 		if (targetEntity[id] === value) {
 			delete entityPatch[id];
@@ -50,7 +170,7 @@ class SimpleEntityEditor extends React.PureComponent {
 		onPatchChange(entityPatch);
 	};
 
-	renderField = (field, value, env, _session_id) => {
+	renderField = (field: IFieldDefinition, value: string, env: IEnvironment, _session_id?: string | number) => {
 		let {getLabel, getPlaceholder, getHelperText, getErrorText, default: _default, ...props} = field;
 		const id = props.id;
 		// The label, placeholder, and helperText are usually not dynamic.
@@ -61,36 +181,43 @@ class SimpleEntityEditor extends React.PureComponent {
 		if (getErrorText) {
 			props.errorText = getErrorText(value, env, field);
 		}
-		let FieldEditor;
-		// switch (props.type) {
-		// 	case 'string':
-		// 	case 'number':
-		if (props.suggestions) {
-			FieldEditor = this.props.TextFieldWithSuggestions;
-			if (!FieldEditor) {console.warn('The expected #TextFieldWithSuggestions is not loaded!');}
-		} else if (props.values) {
-			FieldEditor = this.props.Selector;
-			if (!FieldEditor) {console.warn('The expected #Selector is not loaded!');}
-		} else {
-			switch ((props.type || '').toLowerCase()) {
-				case TYPE_CHECKBOX:
-					FieldEditor = this.props.Checkbox;
-					if (!FieldEditor) {console.warn('The expected #Checkbox is not loaded!');}
-					break;
-				case TYPE_SWITCH:
-					FieldEditor = this.props.Switch;
-					if (!FieldEditor) {console.warn('The expected #Switch is not loaded!');}
-					break;
-				default:
-					FieldEditor = this.props.TextField;
-					if (!FieldEditor) {console.warn('The expected #TextField is not loaded!');}
-			}
+		// FIXME let FieldEditor: React.ReactNode = TextField;
+		let FieldEditor: any = TextField;
+		switch (props.type) {
+			case 'string':
+			case 'number':
+			case 'password':
+				FieldEditor = this.props.TextField;
+				if (!FieldEditor) {console.warn('The needed #TextField is not loaded!');}
+				break;
+			case 'suggestions':
+				FieldEditor = this.props.TextFieldWithSuggestions;
+				if (!FieldEditor) {console.warn('The needed #TextFieldWithSuggestions is not loaded!');}
+				break;
+			case 'selector':
+			case 'checkbox':
+			case 'radio':
+				FieldEditor = this.props.Selector;
+				if (!FieldEditor) {console.warn('The expected #Selector is not loaded!');}
+				break;
+			// case TYPE_CHECKBOX:
+			// 	FieldEditor = this.props.Checkbox;
+			// 	if (!FieldEditor) {console.warn('The expected #Checkbox is not loaded!');}
+			// 	break;
+			// case TYPE_SWITCH:
+			// 	FieldEditor = this.props.Switch;
+			// 	if (!FieldEditor) {console.warn('The expected #Switch is not loaded!');}
+			// 	break;
+			default:
+				FieldEditor = this.props.TextField;
+				if (!FieldEditor) {console.warn('The expected #TextField is not loaded!');}
+				break;
 		}
-		// break;
-		// }
+		if (!FieldEditor) {FieldEditor = this.props.TextField;}
 		const UsedFieldEditor = FieldEditor || this.props.TextField;
+		// FIX-ME Support the _session_id support checking for #TypeScript components.
 		// Pass the _session_id if the used component desires.
-		if (UsedFieldEditor.propTypes._session_id) {props._session_id = _session_id;}
+		if (UsedFieldEditor.propTypes && UsedFieldEditor.propTypes._session_id) {props._session_id = _session_id;}
 		// FIX-ME Currently delete props.type to fix the issue where the height of multi-lined #Text-Field is not flexible.
 		if (props.type && props.multiline) {delete props.type;}
 		return (
@@ -108,34 +235,11 @@ class SimpleEntityEditor extends React.PureComponent {
 		const {_session_id} = this.state;
 		const updatedEntity = entityPatch ? {...targetEntity, ...entityPatch} : {...targetEntity};
 		const isCreating = Boolean(targetEntity._id) || Boolean(targetEntity.id);
-		const env = {
+		const env: IEnvironment = {
 			isCreating: isCreating,
 			// The updated entity.
 			entity: updatedEntity,
 		};
-		return entityFields.map(field => this.renderField(field, updatedEntity[field.id], env, _session_id));
+		return entityFields.map((field: IFieldDefinition) => this.renderField(field, updatedEntity[field.id], env, _session_id));
 	}
 }
-
-SimpleEntityEditor.propTypes = {
-	onPatchChange: PropTypes.func.isRequired,
-	// Fields of the entity that to be handled.
-	entityFields: PropTypes.array.isRequired,
-	// The expected action is updating an entity if the targetEntity._id or targetEntity.id is set.
-	targetEntity: PropTypes.object.isRequired,
-	entityPatch: PropTypes.object,
-
-	// - The component used for unspecified fields.
-	// - The default component used when other components is not correctly loaded.
-	TextField: PropTypes.func,
-	// Being used when props.type equals to 'switch'.
-	Switch: PropTypes.func,
-	// Being used when props.type equals to 'checkbox'.
-	Checkbox: PropTypes.func,
-	// Being used when props.values exists.
-	Selector: PropTypes.func,
-	// Being used when props.suggestions exists.
-	TextFieldWithSuggestions: PropTypes.func,
-};
-
-export default SimpleEntityEditor;

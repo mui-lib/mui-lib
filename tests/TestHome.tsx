@@ -9,6 +9,8 @@ import {CountdownBySeconds} from '../CountdownBySeconds/CountdownBySeconds';
 import {DialogToConfirm} from '../DialogToConfirm/DialogToConfirm';
 import {FieldCheckbox} from '../FieldCheckbox/FieldCheckbox';
 import {FieldSwitch} from '../FieldSwitch/FieldSwitch';
+import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
+import {IFieldAutoComplete, IFieldMargin, IFieldTypeText, SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
 
 interface IProps {
 
@@ -20,10 +22,28 @@ const useStyles = makeStyles((theme: Theme) =>
 	}),
 );
 
+const defaultOptions = {
+	required: true,
+	fullWidth: true,
+	margin: 'dense' as IFieldMargin,
+	type: 'string' as IFieldTypeText,
+	multiline: false,
+	autoComplete: 'off' as IFieldAutoComplete,
+};
+
+
 const TheTestHome = () => {
 
+	const [patch, setPatch] = useState({});
 	const [checkbox, setCheckbox] = useState(false);
 	const classes = useStyles();
+
+	const onPatchChange = (patch: object) => {
+		console.log('patch changed:', patch);
+		setPatch({...patch});
+	};
+
+	console.log('checkbox', checkbox, 'patch:', patch);
 
 	return (
 		<div>
@@ -51,7 +71,7 @@ const TheTestHome = () => {
 				<FieldCheckbox
 					label={'Had a good day?'}
 					value={checkbox}
-					onChange={(ele: any, value: boolean): any => Boolean(console.log(value)) || setCheckbox(value)}
+					onChange={(ele: any, value: boolean): any => setCheckbox(value)}
 				/>
 			</div>
 			<div className={classes.sectionBox}>
@@ -59,7 +79,37 @@ const TheTestHome = () => {
 					label={'Had a good day?'}
 					labelPlacement={'start'}
 					value={checkbox}
-					onChange={(ele: any, value: boolean): any => Boolean(console.log(value)) || setCheckbox(value)}
+					onChange={(ele: any, value: boolean): any => setCheckbox(value)}
+				/>
+			</div>
+			<div className={classes.sectionBox}>
+				<AdvancedTextField
+					label={'Last Name'}
+					showHelperTextWhenNotFocusing={false}
+					placeholder={'What is your last name?'}
+					helperText={'Just for a test!'}
+				/>
+			</div>
+			<div className={classes.sectionBox}>
+				<SimpleEntityEditor
+					entityFields={[{
+						...defaultOptions,
+						id: 'name',
+						label: 'Name',
+						placeholder: 'what will be your name?',
+						required: false,
+						getErrorText: () => undefined,
+					}, {
+						...defaultOptions,
+						id: 'email',
+						label: 'Email',
+						placeholder: 'what is your email?',
+						getErrorText: (value: string) => !value ? undefined : (!value.includes('@') ? 'Please give a valid email!' : undefined),
+					}]}
+					onPatchChange={onPatchChange}
+					targetEntity={{}}
+					entityPatch={patch}
+					TextField={AdvancedTextField}
 				/>
 			</div>
 		</div>
