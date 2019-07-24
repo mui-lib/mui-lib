@@ -1,10 +1,12 @@
 'use strict';
 
 import React from 'react';
+import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox, {CheckboxProps} from '@material-ui/core/Checkbox';
 
 interface IProps extends CheckboxProps {
+	fullWidth?: boolean;
 	label: string;
 	value: boolean;
 	// @see #FormControlLabelProps
@@ -12,21 +14,26 @@ interface IProps extends CheckboxProps {
 }
 
 const TheFieldCheckbox = (props: IProps) => {
-	const {label, labelPlacement, disabled, value, type, ...others} = props;
+	const {fullWidth, label, labelPlacement = 'start', disabled, value, type, ...others} = props;
 	// Extract type = 'checkbox' from props.
-
+	// <FormLabel component="legend">{label}</FormLabel>
 	return (
-		<FormControlLabel
-			label={label}
+		<FormControl
 			disabled={disabled}
-			labelPlacement={labelPlacement}
-			control={
-				<Checkbox
-					{...others}
-					checked={value || false}
-				/>
-			}
-		/>
+			fullWidth={fullWidth}
+		>
+			<FormControlLabel
+				label={label}
+				disabled={disabled}
+				labelPlacement={labelPlacement}
+				control={
+					<Checkbox
+						{...others}
+						checked={value || false}
+					/>
+				}
+			/>
+		</FormControl>
 	);
 };
 

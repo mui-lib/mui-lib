@@ -1,10 +1,12 @@
 'use strict';
 
 import React from 'react';
+import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch, {SwitchProps} from '@material-ui/core/Switch';
 
 interface IProps extends SwitchProps {
+	fullWidth?: boolean;
 	label: string;
 	value: boolean;
 	// @see #FormControlLabelProps
@@ -12,20 +14,26 @@ interface IProps extends SwitchProps {
 }
 
 const TheFieldSwitch = (props: IProps) => {
-	const {label, labelPlacement, disabled, value, type, ...others} = props;
+	const {fullWidth, label, labelPlacement = 'start', disabled, value, type, ...others} = props;
 	// Extract type = 'switch' from props.
+	//<FormLabel component="legend">{label}</FormLabel>
 	return (
-		<FormControlLabel
-			label={label}
+		<FormControl
 			disabled={disabled}
-			labelPlacement={labelPlacement}
-			control={
-				<Switch
-					{...others}
-					checked={value || false}
-				/>
-			}
-		/>
+			fullWidth={fullWidth}
+		>
+			<FormControlLabel
+				label={label}
+				disabled={disabled}
+				labelPlacement={labelPlacement}
+				control={
+					<Switch
+						{...others}
+						checked={value || false}
+					/>
+				}
+			/>
+		</FormControl>
 	);
 };
 
