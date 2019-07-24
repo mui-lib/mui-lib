@@ -3,6 +3,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {FilledInputProps} from '@material-ui/core/FilledInput';
+import {FieldTypeCheckbox, FieldTypeSwitch} from './instances';
 
 // import {FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps} from '@material-ui/core/TextField/TextField';
 
@@ -10,21 +11,25 @@ import {FilledInputProps} from '@material-ui/core/FilledInput';
 // Different sessions will be used for different target entities.
 let _session_id = 1;
 
-const TYPE_CHECKBOX = 'checkbox';
-// A kind of #Checkbox.
-const TYPE_SWITCH = 'switch';
-
 export interface IEnvironment {
 	isCreating: boolean;
 	// The updated entity.
 	entity: any;
 }
 
+// Single and Simple Input Field
 export type IFieldTypeText = 'string' | 'number' | 'password'
+// A Checker/Switch
+export type IFieldTypeSwitch = 'switch'
+export type IFieldTypeCheckbox = 'checkbox'
+// Single Selector
 export type IFieldTypeSingleSelector = 'radio' | 'selector'
-export type IFieldTypeMultipleSelector = 'checkbox'
-// export type IFieldType = 'string' | 'number' | 'password' | 'checkbox' | 'radio' | 'selector'
-export type IFieldType = IFieldTypeText | IFieldTypeSingleSelector | IFieldTypeMultipleSelector | 'suggestions'
+// Multiple Selector
+export type IFieldTypeMultipleSelector = 'checkboxes'
+// Input Field with Suggestions
+export type IFieldTypeTextWithSuggestions = 'suggestions'
+// export type IFieldType = string | number | password | switch | checkbox | radio | selector | checkboxes | suggestions
+export type IFieldType = IFieldTypeText | IFieldTypeSwitch | IFieldTypeCheckbox | IFieldTypeSingleSelector | IFieldTypeMultipleSelector | IFieldTypeTextWithSuggestions
 export type IFieldMargin = 'dense'
 export type IFieldAutoComplete = 'off'
 
@@ -63,6 +68,8 @@ export interface IEntityFieldWrapper extends ISharedFieldProps {
 }
 
 // Define fields and get corresponding implementations by #SimpleEntityEditor.
+// export type IFieldType = string | number | password | switch | checkbox | radio | selector | checkboxes | suggestions
+// export type IFieldType = IFieldTypeText | IFieldTypeSwitch | IFieldTypeCheckbox | IFieldTypeSingleSelector | IFieldTypeMultipleSelector | IFieldTypeTextWithSuggestions
 export interface IBaseFieldDefinition extends ISharedFieldProps {
 	_session_id?: string | number,
 	default?: string;
@@ -70,11 +77,26 @@ export interface IBaseFieldDefinition extends ISharedFieldProps {
 	getLabel?: (env?: IEnvironment, field?: IFieldDefinition, value?: string) => string;
 	getPlaceholder?: (env?: IEnvironment, field?: IFieldDefinition, value?: string) => string;
 	getHelperText?: (env?: IEnvironment, field?: IFieldDefinition, value?: string) => string;
-	getErrorText: (value?: any, env?: IEnvironment, field?: IFieldDefinition) => string | undefined;
+	// Not every field should be checked, even as not empty.
+	getErrorText?: (value?: any, env?: IEnvironment, field?: IFieldDefinition) => string | undefined;
 }
 
 export interface IInputFieldDefinition extends IBaseFieldDefinition {
 	type: IFieldTypeText;
+}
+
+export interface ISwitchFieldDefinition extends IBaseFieldDefinition {
+	type: IFieldTypeSwitch;
+}
+
+export interface ICheckboxFieldDefinition extends IBaseFieldDefinition {
+	type: IFieldTypeCheckbox;
+}
+
+export interface ISingleSelectorFieldDefinition extends IBaseFieldDefinition {
+	// 下拉框、单选框
+	type: IFieldTypeSingleSelector;
+	values?: ISelectorItem[];
 }
 
 // Options for grouped checkbox.
@@ -88,23 +110,22 @@ export interface IMultipleSelectorFieldDefinition extends IBaseFieldDefinition {
 	maximumErrorText?: string;
 }
 
-export interface ISingleSelectorFieldDefinition extends IBaseFieldDefinition {
-	// 下拉框、单选框
-	type: IFieldTypeSingleSelector;
-	values?: ISelectorItem[];
-}
-
 export interface ISuggestionFieldDefinition extends IBaseFieldDefinition {
 	// 下拉框、单选框
-	type: 'suggestions';
+	type: IFieldTypeTextWithSuggestions;
 }
 
-export type IFieldDefinition = IInputFieldDefinition | IMultipleSelectorFieldDefinition | ISingleSelectorFieldDefinition | ISuggestionFieldDefinition
+export type IFieldDefinition = IInputFieldDefinition | ISwitchFieldDefinition | ICheckboxFieldDefinition | IMultipleSelectorFieldDefinition | ISingleSelectorFieldDefinition | ISuggestionFieldDefinition
 
 export interface IInputDom {
 	id: string;
 	name?: string;
 	value: any;
+}
+
+interface ITargetEntity {
+	_id?: string | number;
+	id?: string | number;
 }
 
 export interface IProps {
@@ -114,14 +135,16 @@ export interface IProps {
 	entityFields: IFieldDefinition[],
 	// - The component used for unspecified fields.
 	// - The default component used when other components is not correctly loaded.
-	TextField?: React.ReactNode,
-	Selector?: React.ReactNode,
+	TextField: React.ReactNode,
 	Checkbox?: React.ReactNode,
 	Switch?: React.ReactNode,
+	Selector?: React.ReactNode,
+	GroupedCheckboxes?: React.ReactNode,
 	TextFieldWithSuggestions?: React.ReactNode,
 	// The expected action is updating an entity if the targetEntity._id is set.
-	targetEntity: any;
-	entityPatch?: any;
+	targetEntity: ITargetEntity;
+	// The patch object for the latest entity based on the target entity.
+	entityPatch: object;
 }
 
 export interface IState {
@@ -159,7 +182,7 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 				console.warn(`The id of target is empty, id: [${id}] using target.name as the id: [${name}].`);
 			}
 		}
-		if (type === TYPE_CHECKBOX || type === TYPE_SWITCH) {value = checked;}
+		if (type === FieldTypeSwitch || type === FieldTypeCheckbox) {value = checked;}
 		const {onPatchChange, targetEntity, entityPatch} = this.props;
 		if (targetEntity[id] === value) {
 			delete entityPatch[id];
@@ -195,26 +218,26 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 				if (!FieldEditor) {console.warn('The needed #TextFieldWithSuggestions is not loaded!');}
 				break;
 			case 'selector':
-			case 'checkbox':
 			case 'radio':
 				FieldEditor = this.props.Selector;
 				if (!FieldEditor) {console.warn('The expected #Selector is not loaded!');}
 				break;
-			// case TYPE_CHECKBOX:
-			// 	FieldEditor = this.props.Checkbox;
-			// 	if (!FieldEditor) {console.warn('The expected #Checkbox is not loaded!');}
-			// 	break;
-			// case TYPE_SWITCH:
-			// 	FieldEditor = this.props.Switch;
-			// 	if (!FieldEditor) {console.warn('The expected #Switch is not loaded!');}
-			// 	break;
+			case 'checkboxes':
+			case 'checkbox':
+				FieldEditor = this.props.Checkbox;
+				if (!FieldEditor) {console.warn('The expected #Checkbox is not loaded!');}
+				break;
+			case 'switch':
+				FieldEditor = this.props.Switch;
+				if (!FieldEditor) {console.warn('The expected #Switch is not loaded!');}
+				break;
 			default:
 				FieldEditor = this.props.TextField;
 				if (!FieldEditor) {console.warn('The expected #TextField is not loaded!');}
 				break;
 		}
 		if (!FieldEditor) {FieldEditor = this.props.TextField;}
-		const UsedFieldEditor = FieldEditor || this.props.TextField;
+		const UsedFieldEditor = FieldEditor || this.props.TextField || TextField;
 		// FIX-ME Support the _session_id support checking for #TypeScript components.
 		// Pass the _session_id if the used component desires.
 		if (UsedFieldEditor.propTypes && UsedFieldEditor.propTypes._session_id) {props._session_id = _session_id;}
