@@ -222,10 +222,13 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 				FieldEditor = this.props.Selector;
 				if (!FieldEditor) {console.warn('The expected #Selector is not loaded!');}
 				break;
-			case 'checkboxes':
 			case 'checkbox':
 				FieldEditor = this.props.Checkbox;
 				if (!FieldEditor) {console.warn('The expected #Checkbox is not loaded!');}
+				break;
+			case 'checkboxes':
+				FieldEditor = this.props.GroupedCheckboxes;
+				if (!FieldEditor) {console.warn('The expected #GroupedCheckboxes is not loaded!');}
 				break;
 			case 'switch':
 				FieldEditor = this.props.Switch;
