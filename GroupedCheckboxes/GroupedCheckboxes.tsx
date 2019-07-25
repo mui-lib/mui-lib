@@ -7,25 +7,15 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-import {ISelectorItem, IEntityFieldWrapper} from '../SimpleEntityEditor/SimpleEntityEditor';
+import {IEntityFieldWrapper, IMultipleSelectorFieldProps} from '../SimpleEntityEditor/props';
 
 // import {ISharedFieldProps} from 'src/EntityEditorExample/components/SimpleEntityEditor/SimpleEntityEditor';
 
 // export interface IProps1 extends IRawProps, StandardTextFieldProps {}
-export interface IProps extends IEntityFieldWrapper {
+export interface IProps extends IEntityFieldWrapper, IMultipleSelectorFieldProps {
 	// Whether to show the helper text when not focusing.
 	showHelperTextWhenNotFocusing: boolean;
 	errorText: string;
-
-	// 当前选择的值
-	value?: string[];
-	// 所有的待选项
-	values: ISelectorItem[];
-	// FIX-ME Make it more typed.
-	minimum?: number;
-	minimumErrorText?: string;
-	maximum?: number;
-	maximumErrorText?: string;
 }
 
 export interface IState {

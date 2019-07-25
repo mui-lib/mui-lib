@@ -3,10 +3,10 @@
 import React from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox, {CheckboxProps} from '@material-ui/core/Checkbox';
+import Checkbox from '@material-ui/core/Checkbox';
+import {ICheckboxFieldProps} from '../SimpleEntityEditor/props'; //, {CheckboxProps}
 
-interface IProps extends CheckboxProps {
-	fullWidth?: boolean;
+interface IProps extends ICheckboxFieldProps {
 	label: string;
 	value: boolean;
 	// @see #FormControlLabelProps
@@ -14,21 +14,19 @@ interface IProps extends CheckboxProps {
 }
 
 const TheFieldCheckbox = (props: IProps) => {
-	const {fullWidth, label, labelPlacement = 'start', disabled, value, type, ...others} = props;
+	const {id, label, type, labelPlacement = 'start', fullWidth, value, onChange, ...others} = props;
 	// Extract type = 'checkbox' from props.
 	// <FormLabel component="legend">{label}</FormLabel>
+	console.log('others', others, props);
 	return (
-		<FormControl
-			disabled={disabled}
-			fullWidth={fullWidth}
-		>
+		<FormControl {...others}>
 			<FormControlLabel
 				label={label}
-				disabled={disabled}
 				labelPlacement={labelPlacement}
 				control={
 					<Checkbox
-						{...others}
+						id={id}
+						onChange={onChange}
 						checked={value || false}
 					/>
 				}

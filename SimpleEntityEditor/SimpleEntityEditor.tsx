@@ -3,7 +3,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {FieldTypeCheckbox, FieldTypeSwitch} from './instances';
-import {IEnvironment, IFieldDefinition} from './types';
+import {IEnvironment, IFieldDefinition} from './definitions';
 
 // import {FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps} from '@material-ui/core/TextField/TextField';
 

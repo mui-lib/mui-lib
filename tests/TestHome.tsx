@@ -10,7 +10,8 @@ import {DialogToConfirm} from '../DialogToConfirm/DialogToConfirm';
 import {FieldCheckbox} from '../FieldCheckbox/FieldCheckbox';
 import {FieldSwitch} from '../FieldSwitch/FieldSwitch';
 import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
-import {IFieldAutoComplete, IFieldMargin, IFieldTypeText, SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
+import {SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
+import {FieldAutoCompleteOff, FieldMarginDense, FieldTypeString} from '../SimpleEntityEditor/instances';
 
 interface IProps {
 
@@ -25,10 +26,10 @@ const useStyles = makeStyles((theme: Theme) =>
 const defaultOptions = {
 	required: true,
 	fullWidth: true,
-	margin: 'dense' as IFieldMargin,
-	type: 'string' as IFieldTypeText,
+	margin: FieldMarginDense,
+	type: FieldTypeString,
 	multiline: false,
-	autoComplete: 'off' as IFieldAutoComplete,
+	autoComplete: FieldAutoCompleteOff,
 };
 
 
