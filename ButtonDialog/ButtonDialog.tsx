@@ -19,7 +19,7 @@ interface IProps {
 	content?: string;
 	// Element of the actions should be {name: string, onClick: func, color: string}.
 	actions: IButtonAction[];
-	buttonContent: any;
+	buttonContent: React.ReactNode;
 	buttonOptions?: object;
 }
 
