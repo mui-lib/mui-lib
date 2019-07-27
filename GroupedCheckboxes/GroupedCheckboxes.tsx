@@ -72,7 +72,7 @@ export class GroupedCheckboxes extends React.PureComponent<IProps> {
 		const {onChange, id, values, value, minimum, minimumErrorText, maximum, maximumErrorText} = this.props;
 		const selected = new Map();
 		if (value) {value.map((key: string) => selected[key] = true);}
-		console.log(target, values, value, key, checked);
+		// console.log(values, value, key, checked);
 		selected[key] = checked;
 		const _value = values.map(item => item.value).filter(item => selected[item]);
 		if (minimum && _value.length < minimum) {return alert(minimumErrorText);}
@@ -132,7 +132,6 @@ export class GroupedCheckboxes extends React.PureComponent<IProps> {
 					))}
 				</FormGroup>
 				<FormHelperText>{realHelperText || placeholder}</FormHelperText>
-				<div style={{height: 8}}/>
 			</FormControl>
 		);
 		// The error will be shown after onBlur() value is not valid.
