@@ -12,6 +12,7 @@ import {FieldSwitch} from '../FieldSwitch/FieldSwitch';
 import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
 import {SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
 import {FieldAutoCompleteOff, FieldMarginDense, FieldTypeString} from '../SimpleEntityEditor/instances';
+import {SimpleFieldEditor} from '../SimpleFieldEditor/SimpleFieldEditor';
 
 interface IProps {
 
@@ -19,9 +20,27 @@ interface IProps {
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		sectionBox: {margin: theme.spacing(3)},
+		bodyBox: {maxWidth: 960, margin: '0 auto'},
+		sectionTitle: {margin: 4},
+		sectionBox: {margin: theme.spacing(1.5), background: '#eee', padding: '8px 12px', borderRadius: '5px'},
 	}),
 );
+
+interface ISectionProps {
+	title: string;
+	children: React.ReactNode;
+}
+
+const DemoSection = (props: ISectionProps) => {
+	const classes = useStyles();
+	const {title, children} = props;
+	return (
+		<div className={classes.sectionBox}>
+			<h3 className={classes.sectionTitle}>{title}</h3>
+			{children}
+		</div>
+	);
+};
 
 const defaultOptions = {
 	required: true,
@@ -47,19 +66,19 @@ const TheTestHome = () => {
 	console.log('checkbox', checkbox, 'patch:', patch);
 
 	return (
-		<div>
-			<div className={classes.sectionBox}>
+		<div className={classes.bodyBox}>
+			<DemoSection title={'CountdownBySeconds'}>
 				<span>There are <CountdownBySeconds seconds={30}/> seconds left to have supper now!</span>
-			</div>
-			<div className={classes.sectionBox}>
+			</DemoSection>
+			<DemoSection title={'ButtonDialog'}>
 				<ButtonDialog
 					buttonContent={'Hello'}
 					buttonOptions={{color: 'primary', variant: 'contained'}}
 					title={'Would like to have supper?'}
 					actions={[{name: 'Okay', onClick: () => console.log('Clicked Okay')}]}
 				/>
-			</div>
-			<div className={classes.sectionBox}>
+			</DemoSection>
+			<DemoSection title={'DialogToConfirm'}>
 				<DialogToConfirm
 					buttonText={'Go Through'}
 					buttonProps={{color: 'primary', variant: 'contained'}}
@@ -67,31 +86,44 @@ const TheTestHome = () => {
 					buttonConfirmText={'Okay'}
 					onConfirm={() => console.log('confirmed')}
 				/>
-			</div>
-			<div className={classes.sectionBox}>
+			</DemoSection>
+			<DemoSection title={'FieldCheckbox'}>
 				<FieldCheckbox
 					label={'Had a good day?'}
 					value={checkbox}
+					// @ts-ignore
 					onChange={(ele: any, value: boolean): any => setCheckbox(value)}
 				/>
-			</div>
-			<div className={classes.sectionBox}>
+			</DemoSection>
+			<DemoSection title={'FieldSwitch'}>
 				<FieldSwitch
 					label={'Had a good day?'}
 					labelPlacement={'start'}
 					value={checkbox}
 					onChange={(ele: any, value: boolean): any => setCheckbox(value)}
 				/>
-			</div>
-			<div className={classes.sectionBox}>
+			</DemoSection>
+			<DemoSection title={'AdvancedTextField'}>
 				<AdvancedTextField
 					label={'Last Name'}
 					showHelperTextWhenNotFocusing={false}
 					placeholder={'What is your last name?'}
 					helperText={'Just for a test!'}
 				/>
-			</div>
-			<div className={classes.sectionBox}>
+			</DemoSection>
+			<DemoSection title={'SimpleFieldEditor'}>
+				<SimpleFieldEditor
+					id={'name'}
+					type={'string'}
+					label={'Nick Name'}
+					showHelperTextWhenNotFocusing={false}
+					placeholder={'What is your nick name?'}
+					helperText={'Just for a test!'}
+					onChange={({target: {value}}: any) => onPatchChange({...patch, name: value})}
+					value={patch['name'] || ''}
+				/>
+			</DemoSection>
+			<DemoSection title={'SimpleEntityEditor'}>
 				<SimpleEntityEditor
 					entityFields={[{
 						...defaultOptions,
@@ -112,7 +144,7 @@ const TheTestHome = () => {
 					entityPatch={patch}
 					TextField={AdvancedTextField}
 				/>
-			</div>
+			</DemoSection>
 		</div>
 	);
 };
