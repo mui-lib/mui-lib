@@ -74,6 +74,9 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 		const {onPatchChange, targetEntity, entityPatch} = this.props;
 		if (targetEntity[id] === value) {
 			delete entityPatch[id];
+		} else if (Array.isArray(value) && Array.isArray(targetEntity[id]) && targetEntity[id].length === value.length && JSON.stringify(targetEntity[id]) === JSON.stringify(value)) {
+			// Editing array value.
+			delete entityPatch[id];
 		} else {
 			entityPatch[id] = value;
 		}

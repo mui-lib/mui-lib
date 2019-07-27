@@ -17,7 +17,6 @@ const TheFieldCheckbox = (props: IProps) => {
 	const {id, label, type, labelPlacement = 'start', fullWidth, value, onChange, ...others} = props;
 	// Extract type = 'checkbox' from props.
 	// <FormLabel component="legend">{label}</FormLabel>
-	console.log('others', others, props);
 	return (
 		<FormControl {...others}>
 			<FormControlLabel
