@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import Close from '@material-ui/icons/Close';
+import IconClose from '@material-ui/icons/Close';
 import {useDerivedProps} from '../hooks/useDerivedProps';
 import {MuiAppBar} from '../layouts/MuiAppBar';
 import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
@@ -79,6 +79,8 @@ const getResolvedProps = <T extends object, P extends object, K>(props: IDialogE
 	throw new Error('props given conflicted');
 };
 
+// FIX-ME Fix the so much more props and provide a flexible visual interactions.
+// FIX-ME Reuse/Export the logic parts only like kind of hooks to reduce the props required.
 export const TheDialogEntityEditor = React.memo(<T extends object, P extends object, K>(props: IDialogEntityEditorProps<T, P, K>) => {
 	const {open, fullScreen, title, description, fields, getUpsertButtonLabel, labelButtonDelete} = props;
 	const {isCreating, baseEntity, targetEntity, targetEntityId, isResolvedEntityValid} = props;
@@ -89,15 +91,12 @@ export const TheDialogEntityEditor = React.memo(<T extends object, P extends obj
 
 	// The resolved props depend on the given props, and hence should change along with it.
 	const {theRealBaseEntity, initialAssetPatch} = useDerivedProps<IResolvedProps<T, P>>(() => getResolvedProps(props), [baseEntity, targetEntity]);
-
+	// FIX-ME The patch should be reset when the [ target entry / base entry / open status ] changes.
 	const [entityPatch, setEntityPatchState] = React.useState((): P => initialAssetPatch);
-
+	// The final resolved entity, combining the patch upon the base.
 	const resolvedEntity = isCreating ? entityPatch as any as T : {...theRealBaseEntity, ...entityPatch};
-
 	// Is the current patch ready to commit?
 	const isPatchReady = isResolvedEntityValid(resolvedEntity) && !isPatchEmpty(entityPatch);
-
-	// console.log('-->>', props, targetAssetId, baseEntity, initialAssetPatch, entityPatch, resolvedEntity, isPatchReady);
 
 	const onCreateEntity = () => !isPatchReady || !doCreateEntity ? undefined : doCreateEntity(entityPatch);
 	const onUpdateEntity = () => !isPatchReady || !targetEntityId || !doUpdateEntity ? undefined : doUpdateEntity(targetEntityId, entityPatch);
@@ -113,7 +112,7 @@ export const TheDialogEntityEditor = React.memo(<T extends object, P extends obj
 				title={title}
 				leftDom={
 					<IconButton color="inherit" onClick={onDismissDialog}>
-						<Close/>
+						<IconClose/>
 					</IconButton>
 				}
 				rightDom={
