@@ -2,12 +2,13 @@
 
 import React from 'react';
 import {Dialog} from '@material-ui/core';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import Close from '@material-ui/icons/Close';
+import {useDerivedProps} from '../hooks/useDerivedProps';
 import {MuiAppBar} from '../layouts/MuiAppBar';
 import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
 import {FieldCheckbox} from '../FieldCheckbox/FieldCheckbox';
@@ -75,7 +76,7 @@ const getResolvedProps = <T extends object, P extends object, K>(props: IDialogE
 			initialAssetPatch: {} as P,
 		};
 	}
-	throw new Error('props given confliced');
+	throw new Error('props given conflicted');
 };
 
 export const TheDialogEntityEditor = React.memo(<T extends object, P extends object, K>(props: IDialogEntityEditorProps<T, P, K>) => {
@@ -87,9 +88,7 @@ export const TheDialogEntityEditor = React.memo(<T extends object, P extends obj
 	if (!isCreating && (!targetEntity || !targetEntityId)) {throw new Error('props given conflicted');}
 
 	// The resolved props depend on the given props, and hence should change along with it.
-	// Calculation would better be avoided.
-	const [resolvedProps] = React.useState(() => getResolvedProps(props));
-	const {theRealBaseEntity, initialAssetPatch} = resolvedProps;
+	const {theRealBaseEntity, initialAssetPatch} = useDerivedProps<IResolvedProps<T, P>>(() => getResolvedProps(props), [baseEntity, targetEntity]);
 
 	const [entityPatch, setEntityPatchState] = React.useState((): P => initialAssetPatch);
 
