@@ -9,6 +9,7 @@ import {FieldSwitch} from '../FieldSwitch/FieldSwitch';
 import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
 import {SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
 import {SimpleFieldEditor} from '../SimpleFieldEditor/SimpleFieldEditor';
+import {DialogDemoAccount} from './DialogDemoAccount';
 import {DemoSection} from './DemoSection';
 import {fields as _fields} from './resources';
 import {useStyles} from './styles';
@@ -99,6 +100,9 @@ const TheTestHome = () => {
 					entityPatch={patch}
 					TextField={AdvancedTextField}
 				/>
+			</DemoSection>
+			<DemoSection title={'SimpleEntityEditor'}>
+				<DialogDemoAccount/>
 			</DemoSection>
 		</div>
 	);
