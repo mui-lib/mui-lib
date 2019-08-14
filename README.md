@@ -6,7 +6,27 @@ A library of more complicated components for [material-ui](https://github.com/mu
 
 ## Content
 
-<!-- - Field Editors -->
+- Editors
+	- Entity Editors
+		- Simple Entity Editor
+		- Dialog Entity Editor
+	- Field Editors
+		- Advanced Text Field
+		- Field Checkbox
+		- Field Switch
+		- Grouped Checkboxes
+- Dialogs
+	- Button Dialog
+	- Dialog to Confirm
+- Hooks
+	- useDerivedProps
+- Layouts
+	- Mui App Bar
+- Standalone
+	- Countdown By Seconds
+
+## Editors
+
 - Entity Editors
 	- Simple Entity Editor `<T extends object, P extends object, K = string>`
 		- onPatchChange: `(patch: any) => void`
@@ -19,7 +39,7 @@ A library of more complicated components for [material-ui](https://github.com/mu
 		- Selector?: `React.ReactNode`
 		- GroupedCheckboxes?: `React.ReactNode`
 		- TextFieldWithSuggestions?: `React.ReactNode`
-	- Dialog Entity Editor
+	- [Dialog Entity Editor](Documents/Dialog-Entity-Editor.md)
 		- isCreating: `boolean`
 		- baseEntity?: `P`
 		- targetEntity?: `T`
@@ -36,25 +56,34 @@ A library of more complicated components for [material-ui](https://github.com/mu
 		- Extends `Switch Props`
 	- Grouped Checkboxes
 		- Extends `IEntityFieldWrapper` `IMultipleSelectorFieldProps`
-- Dialogs
-	- Button Dialog
-		- title: `string`
-		- content?: `string`
-		- actions: `IButtonAction[]`
-	- Dialog to Confirm
-		- title: `string`
-		- onConfirm: `() => any`
-- Documents
-	- [Dialog Entity Editor](Documents/Dialog-Entity-Editor.md)
-- Hooks
-	- useDerivedProps
-		- getResolvedProps: `() => T`
-		- depends?: `any[]`
-- Layouts
-	- MuiAppBar
-		- title: `string`
-		- domLeft?: `React Dom`
-		- domRight?: `React Dom`
-- Standalone
-	- Countdown By Seconds
-		- Seconds: `number`
+
+## Dialogs
+
+> [Ref:](https://material.io/design/components/dialogs.html)
+> Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.
+
+- Button Dialog
+	- title: `string`
+	- content?: `string`
+	- actions: `IButtonAction[]`
+- Dialog to Confirm
+	- title: `string`
+	- onConfirm: `() => any`
+
+## Hooks
+
+- useDerivedProps
+	- getResolvedProps: `() => T`
+	- depends?: `any[]`
+
+## Layouts
+
+- MuiAppBar
+	- title: `string`
+	- domLeft?: `React Dom`
+	- domRight?: `React Dom`
+
+## Standalone
+
+- Countdown By Seconds
+	- Seconds: `number`
