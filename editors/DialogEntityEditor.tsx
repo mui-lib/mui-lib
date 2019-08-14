@@ -16,6 +16,7 @@ import {FieldSwitch} from '../FieldSwitch/FieldSwitch';
 import {GroupedCheckboxes} from '../GroupedCheckboxes/GroupedCheckboxes';
 import {IFieldDefinition} from '../SimpleEntityEditor/definitions';
 import {SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
+import {IDialogEntityEditorProps} from './IDialogEntityEditor';
 
 // Whether a patch is valid to be committed.
 const isPatchEmpty = (patch: object): boolean => {
@@ -24,18 +25,13 @@ const isPatchEmpty = (patch: object): boolean => {
 };
 
 // The patches used for creation and modification may differ.
-export interface IDialogEntityEditorProps<T extends object, P extends object, K> {
-	open: boolean;
+interface IProps<T extends object, P extends object, K = string> extends IDialogEntityEditorProps<T, P, K> {
 	fullScreen: boolean;
 	title: string;
 	// getTitle: (isCreating: boolean) => string;
 	// domDialogTitleBar: React.ReactNode;
 	description?: string;
 	// domDialogDescription?: React.ReactNode;
-
-	isCreating: boolean;
-	baseEntity?: P;
-	targetEntity?: T;
 	targetEntityId?: K;
 
 	getUnifiedEntity: (entity: T) => T;
@@ -44,13 +40,8 @@ export interface IDialogEntityEditorProps<T extends object, P extends object, K>
 	fields: IFieldDefinition[];
 	// FIX-ME Required upsert.
 	getUpsertButtonLabel: (isCreating: boolean) => string;
-	doCreateEntity?: (patch: P) => any;
-	doUpdateEntity?: (_id: K, patch: P) => any;
 	// Optional deletion.
 	labelButtonDelete?: string;
-	doDeleteEntity?: (_id: K) => any;
-	// Dismiss dialog.
-	onDismissDialog: React.MouseEventHandler;
 }
 
 // Deconstruct from the real props to avoid conflict.
@@ -62,7 +53,7 @@ interface IResolvedProps<T extends object, P extends object> {
 	initialAssetPatch: P;
 }
 
-const getResolvedProps = <T extends object, P extends object, K>(props: IDialogEntityEditorProps<T, P, K>): IResolvedProps<T, P> => {
+const getResolvedProps = <T extends object, P extends object, K>(props: IProps<T, P, K>): IResolvedProps<T, P> => {
 	const {isCreating, baseEntity, targetEntity, getUnifiedEntity} = props;
 	if (isCreating && baseEntity) {
 		return {
@@ -81,10 +72,10 @@ const getResolvedProps = <T extends object, P extends object, K>(props: IDialogE
 
 // FIX-ME Fix the so much more props and provide a flexible visual interactions.
 // FIX-ME Reuse/Export the logic parts only like kind of hooks to reduce the props required.
-export const TheDialogEntityEditor = React.memo(<T extends object, P extends object, K>(props: IDialogEntityEditorProps<T, P, K>) => {
+const TheDialogEntityEditor = React.memo(<T extends object, P extends object, K>(props: IProps<T, P, K>) => {
 	const {open, fullScreen, title, description, fields, getUpsertButtonLabel, labelButtonDelete} = props;
 	const {isCreating, baseEntity, targetEntity, targetEntityId, isResolvedEntityValid} = props;
-	const {doCreateEntity, doUpdateEntity, doDeleteEntity, onDismissDialog} = props;
+	const {doCreateEntity, doUpdateEntity, doDeleteEntity, doDismissDialog} = props;
 	// Check the validity of the given props.
 	if (isCreating && (!baseEntity)) {throw new Error('props given conflicted');}
 	if (!isCreating && (!targetEntity || !targetEntityId)) {throw new Error('props given conflicted');}
@@ -107,11 +98,11 @@ export const TheDialogEntityEditor = React.memo(<T extends object, P extends obj
 	const onPatchChange = (patch: P) => setEntityPatchState({...patch});
 
 	return (
-		<Dialog open={open} fullScreen={fullScreen} onClose={onDismissDialog}>
+		<Dialog open={open} fullScreen={fullScreen} onClose={doDismissDialog}>
 			<MuiAppBar
 				title={title}
 				leftDom={
-					<IconButton color="inherit" onClick={onDismissDialog}>
+					<IconButton color="inherit" onClick={doDismissDialog}>
 						<IconClose/>
 					</IconButton>
 				}
@@ -138,9 +129,11 @@ export const TheDialogEntityEditor = React.memo(<T extends object, P extends obj
 				<br/>
 			</DialogContent>
 			<DialogActions>
-				{isCreating ? undefined : <Button variant='contained' color='primary' disabled={isPatchReady} onClick={onDeleteEntity}>{labelButtonDelete}</Button>}
+				{isCreating || !onDeleteEntity || !labelButtonDelete ? undefined : <Button variant='contained' color='primary' disabled={isPatchReady} onClick={onDeleteEntity}>{labelButtonDelete}</Button>}
 				<Button variant='contained' color='primary' disabled={!isPatchReady} onClick={isCreating ? onCreateEntity : onUpdateEntity}>{getUpsertButtonLabel(isCreating)}</Button>
 			</DialogActions>
 		</Dialog>
 	);
 });
+
+export const getDialogEntityEditor = <T extends object, P extends object, K>(): React.FC<IProps<T, P, K>> => TheDialogEntityEditor;
