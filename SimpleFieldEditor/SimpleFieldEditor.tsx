@@ -14,16 +14,20 @@ interface IProps extends IInputFieldDefinition, IInputFieldProps {
 
 // A field editor which wraps a #AdvancedTextField and works like a #TextField but more powerful.
 export const TheSimpleFieldEditor = (props: IProps) => {
-	const env: IEnvironment = {isCreating: true, entity: props};
+	const env: IEnvironment = {isCreating: true, entity: props, errorTexts: []};
 	const field = props;
 	const {value} = props;
 	let {getLabel, getPlaceholder, getHelperText, getErrorText, ...others} = props;
 	// The label, placeholder, and helperText are usually not dynamic.
+	// FIX-ME Remove the duplicated codes.
 	if (getLabel) {others.label = getLabel(env, field, value);}
 	if (getPlaceholder) {others.placeholder = getPlaceholder(env, field, value);}
 	if (getHelperText) {others.helperText = getHelperText(env, field, value);}
 	// The errorText is often dynamic.
-	if (getErrorText) {others.errorText = getErrorText(value, env, field);}
+	if (getErrorText) {
+		others.errorText = getErrorText(value, env, field);
+		if (others.errorText) {env.errorTexts.push(others.errorText);}
+	}
 	return (
 		<AdvancedTextField {...others}/>
 	);

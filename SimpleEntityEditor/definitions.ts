@@ -10,6 +10,9 @@ export interface IEnvironment {
 	isCreating: boolean;
 	// The updated entity.
 	entity: any;
+	// The errors of fields if any.
+	// The patch is not ready yet if it is not empty!
+	errorTexts: string[];
 }
 
 export interface ISelectorItem {

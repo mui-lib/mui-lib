@@ -18,7 +18,8 @@ interface ITargetEntity {
 
 export interface IProps {
 	_session_id?: string | number,
-	onPatchChange: (patch: any) => void,
+	onPatchChange: (patch: any) => any;
+	onFieldsRendered?: (env: IEnvironment) => any;
 	// Fields of the entity that to be handled.
 	entityFields: IFieldDefinition[],
 	// - The component used for unspecified fields.
@@ -94,6 +95,7 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 		// The errorText is often dynamic.
 		if (getErrorText) {
 			props.errorText = getErrorText(value, env, field);
+			if (props.errorText) {env.errorTexts.push(props.errorText);}
 		}
 		// FIXME let FieldEditor: React.ReactNode = TextField;
 		let FieldEditor: any = TextField;
@@ -148,15 +150,17 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 	};
 
 	render() {
-		const {entityFields, targetEntity = {}, entityPatch = {}} = this.props;
+		const {entityFields, targetEntity = {}, entityPatch = {}, onFieldsRendered} = this.props;
 		const {_session_id} = this.state;
 		const updatedEntity = entityPatch ? {...targetEntity, ...entityPatch} : {...targetEntity};
 		const isCreating = Boolean(targetEntity._id) || Boolean(targetEntity.id);
-		const env: IEnvironment = {
+		const env = {
 			isCreating: isCreating,
 			// The updated entity.
 			entity: updatedEntity,
+			errorTexts: [],
 		};
+		onFieldsRendered && onFieldsRendered(env);
 		return entityFields.map((field: IFieldDefinition) => this.renderField(field, updatedEntity[field.id], env, _session_id));
 	}
 }
