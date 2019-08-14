@@ -3,7 +3,7 @@
 
 import React from 'react';
 import {useDerivedProps} from '../hooks/useDerivedProps';
-import {IFieldDefinition} from '../SimpleEntityEditor/definitions';
+import {IEnvironment, IFieldDefinition} from '../SimpleEntityEditor/definitions';
 import {IDialogEntityEditorProps} from './IDialogEntityEditor';
 
 // Whether a patch is valid to be committed.
@@ -71,15 +71,23 @@ export const useUpsertEntity = <T extends object, P extends object, K = string>(
 	const {theRealBaseEntity, initialAssetPatch} = useDerivedProps(() => getDerivedProps(props), [baseEntity, targetEntity]);
 	// FIX-ME The patch should be reset when the [ target entry / base entry / open status ] changes.
 	const [entityPatch, setEntityPatchState] = React.useState((): P => initialAssetPatch);
+	const refEnv = React.useRef<IEnvironment | undefined>(undefined);
+	let env = refEnv.current;
 	// The final resolved entity, combining the patch upon the base.
 	const resolvedEntity = isCreating ? entityPatch as any as T : {...theRealBaseEntity, ...entityPatch};
 	// Is the current patch ready to commit?
 	const isPatchReady = isResolvedEntityValid(resolvedEntity) && !isPatchEmpty(entityPatch);
 
-	const onCreateEntity = () => !isPatchReady || !doCreateEntity ? undefined : doCreateEntity(entityPatch);
-	const onUpdateEntity = () => !isPatchReady || !targetEntityId || !doUpdateEntity ? undefined : doUpdateEntity(targetEntityId, entityPatch);
+	const onCreateEntity = () => !isPatchReady || !doCreateEntity ? undefined : (
+		env && env.errorTexts.length > 0 ? alert(env.errorTexts[0]) : doCreateEntity(entityPatch)
+	);
+	const onUpdateEntity = () => !isPatchReady || !targetEntityId || !doUpdateEntity ? undefined : (
+		env && env.errorTexts.length > 0 ? alert(env.errorTexts[0]) : doUpdateEntity(targetEntityId, entityPatch)
+	);
 	// Deletion is disallowed because patch is pending to upsert.
 	const onDeleteEntity = () => isPatchReady || !targetEntityId || !doDeleteEntity ? undefined : doDeleteEntity(targetEntityId);
+	// Patch Change > Render Fields(Check Errors) > Use Ref to Bind the Resolved Errors
+	const onFieldsRendered = React.useCallback((_env: IEnvironment) => refEnv.current = env = _env, []);
 
 	// const {title, description, updatedEntity, isCreating} = state;
 	const onPatchChange = (patch: P) => setEntityPatchState({...patch});
@@ -90,6 +98,7 @@ export const useUpsertEntity = <T extends object, P extends object, K = string>(
 		entityPatch,
 
 		onPatchChange,
+		onFieldsRendered,
 
 		onCreateEntity,
 		onUpdateEntity,

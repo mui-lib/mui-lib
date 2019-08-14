@@ -23,7 +23,7 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 
 	const wrapper = useUpsertEntity(props);
 	const {isPatchReady, entityPatch, theRealBaseEntity} = wrapper;
-	const {onPatchChange, onCreateEntity, onUpdateEntity, onDeleteEntity} = wrapper;
+	const {onPatchChange, onFieldsRendered, onCreateEntity, onUpdateEntity, onDeleteEntity} = wrapper;
 
 	return (
 		<Dialog open={open} fullScreen={fullScreen} onClose={doDismissDialog}>
@@ -45,6 +45,7 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 				{description ? <DialogContentText>{description}</DialogContentText> : undefined}
 				<SimpleEntityEditor
 					onPatchChange={onPatchChange}
+					onFieldsRendered={onFieldsRendered}
 					entityFields={fields}
 					entityPatch={entityPatch}
 					targetEntity={theRealBaseEntity}
