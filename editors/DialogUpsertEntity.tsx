@@ -17,7 +17,7 @@ import {SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
 import {IEditorUpsertEntityProps, useUpsertEntity} from './useUpsertEntity';
 
 // FIX-ME Fix the so much more props and provide a flexible visual interactions.
-const TheDialogEntityEditor = React.memo(<T extends object, P extends object, K>(props: IEditorUpsertEntityProps<T, P, K>) => {
+const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(props: IEditorUpsertEntityProps<T, P, K>) => {
 	const {open, fullScreen, title, description, fields, getUpsertButtonLabel, labelButtonDelete} = props;
 	const {isCreating, doDismissDialog} = props;
 
@@ -64,4 +64,4 @@ const TheDialogEntityEditor = React.memo(<T extends object, P extends object, K>
 	);
 });
 
-export const getDialogEntityEditor = <T extends object, P extends object, K>(): React.FC<IEditorUpsertEntityProps<T, P, K>> => TheDialogEntityEditor;
+export const getDialogUpsertEntity = <T extends object, P extends object, K>(): React.FC<IEditorUpsertEntityProps<T, P, K>> => DialogUpsertEntity;

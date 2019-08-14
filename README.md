@@ -27,6 +27,28 @@ A library of more complicated components for [material-ui](https://github.com/mu
 
 ## Editors
 
+Assets Manager >
+Dialog/Panel Upsert Entity >
+Entity Editor > Field Editor >
+Label + Placeholder + Helper Text(with Error Checker)
+
+- Dialog Upsert Entity
+
+	 Used to
+	 1\. compose an entity body to create an instance of the specific resource
+	 2\. compose an entity patch to update the target resource;
+	 3\. confirm to delete an entity;
+
+	 Takes care of the entity body/patch and serves for the outer assets manager.
+
+	- [Dialog Upsert Entity](Documents/Dialog-Upsert-Entity.md)
+		- isCreating: `boolean`
+		- baseEntity?: `P`
+		- targetEntity?: `T`
+		- fields: `IFieldDefinition[]`
+		- doCreateEntity?: `(patch: P) => any`
+		- doUpdateEntity?: `(_id: K, patch: P) => any`
+		- doDeleteEntity?: `(_id: K) => any`
 - Entity Editors
 	- Simple Entity Editor `<T extends object, P extends object, K = string>`
 		- onPatchChange: `(patch: any) => void`
@@ -39,14 +61,6 @@ A library of more complicated components for [material-ui](https://github.com/mu
 		- Selector?: `React.ReactNode`
 		- GroupedCheckboxes?: `React.ReactNode`
 		- TextFieldWithSuggestions?: `React.ReactNode`
-	- [Dialog Entity Editor](Documents/Dialog-Entity-Editor.md)
-		- isCreating: `boolean`
-		- baseEntity?: `P`
-		- targetEntity?: `T`
-		- fields: `IFieldDefinition[]`
-		- doCreateEntity?: `(patch: P) => any`
-		- doUpdateEntity?: `(_id: K, patch: P) => any`
-		- doDeleteEntity?: `(_id: K) => any`
 - Field Editors
 	- Advanced Text Field
 		- Extends `Standard Text Field Props`

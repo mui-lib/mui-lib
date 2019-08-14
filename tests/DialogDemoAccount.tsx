@@ -2,13 +2,13 @@
 
 import React from 'react';
 import {Button} from '@material-ui/core';
-import {getDialogEntityEditor} from '../editors/DialogEntityEditor';
+import {getDialogUpsertEntity} from '../editors/DialogUpsertEntity';
 import {IDialogEntityEditorProps} from '../editors/IDialogEntityEditor';
 import {AccountExcel} from './AccountExcel';
 import {AccountUtil, IAccount, IAccountBody, IAccountPatch} from './typed-accounts';
 import {fields as _fields, RAccount} from './resources';
 
-const DialogAccountEditor = getDialogEntityEditor<IAccount, IAccountPatch, string>();
+const TheDialogUpsertAccount = getDialogUpsertEntity<IAccount, IAccountPatch, string>();
 
 const fields = [_fields.name, _fields.major, _fields.email];
 
@@ -19,7 +19,7 @@ interface IProps extends IDialogEntityEditorProps<IAccount, IAccountPatch, strin
 export const DialogUpsertAccount = (props: IProps) => {
 	const {isCreating, baseEntity, targetEntity, ...others} = props;
 	return (
-		<DialogAccountEditor
+		<TheDialogUpsertAccount
 			{...others}
 			isCreating={isCreating} baseEntity={baseEntity}
 			targetEntity={targetEntity} targetEntityId={targetEntity ? targetEntity.id : undefined}
