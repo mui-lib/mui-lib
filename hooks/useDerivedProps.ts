@@ -1,6 +1,7 @@
 'use strict';
 
 import React from 'react';
+import {areDependedValuesDifferent} from 'src/zlib/mui-lib/hooks/utils';
 
 interface IRefNoDuplicateRenders<T> {
 	depends?: any[];
@@ -15,16 +16,11 @@ export const useDerivedProps = <T>(getResolvedProps: () => T, depends?: any[]): 
 	if (!ref.current) {ref.current = {depends: depends, value: getResolvedProps()};}
 	// Re-calculate the resolved props the following every time it changes.
 	// May use the React#useEffect to detect the changes of the depends list.
-	depends && ref.current.depends && ref.current.depends !== depends && ref.current.depends.find((value, index) => {
-		if (depends[index] !== value) {
-			if (!ref.current) {return true;}
-			// Reset the depends.
-			ref.current.depends = depends;
-			ref.current.value = getResolvedProps();
-			return true;
-		}
-		return false;
-	});
+	if (areDependedValuesDifferent(depends, ref.current.depends)) {
+		// Reset the depends.
+		ref.current.depends = depends;
+		ref.current.value = getResolvedProps();
+	}
 	// Consider return the ref itself to export more data.
 	return ref.current.value;
 };
