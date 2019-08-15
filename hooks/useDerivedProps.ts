@@ -9,7 +9,7 @@ interface IRefNoDuplicateRenders<T> {
 
 // Calculate something and cache within the Function Components using React hooks.
 // MAY BE USED TO Get the derived props from the context(props/states) depends on context(props/states).
-export const useDerivedProps = <T>(getResolvedProps: () => T, depends?: any[]) => {
+export const useDerivedProps = <T>(getResolvedProps: () => T, depends?: any[]): T => {
 	const ref = React.useRef<IRefNoDuplicateRenders<T>>();
 	// Calculate the resolved props the first time.
 	if (!ref.current) {ref.current = {depends: depends, value: getResolvedProps()};}
@@ -18,6 +18,8 @@ export const useDerivedProps = <T>(getResolvedProps: () => T, depends?: any[]) =
 	depends && ref.current.depends && ref.current.depends !== depends && ref.current.depends.find((value, index) => {
 		if (depends[index] !== value) {
 			if (!ref.current) {return true;}
+			// Reset the depends.
+			ref.current.depends = depends;
 			ref.current.value = getResolvedProps();
 			return true;
 		}
