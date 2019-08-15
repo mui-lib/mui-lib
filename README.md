@@ -19,6 +19,7 @@ A library of more complicated components for [material-ui](https://github.com/mu
 	- Button Dialog
 	- Dialog to Confirm
 - Hooks
+    - useComponentDidUpdate
 	- useDerivedProps
 - Layouts
 	- Mui App Bar
@@ -86,6 +87,57 @@ Label + Placeholder + Helper Text(with Error Checker)
 
 ## Hooks
 
+> [Ref:](https://reactjs.org/docs/hooks-intro.html#its-hard-to-reuse-stateful-logic-between-components)
+> Hooks allow you to reuse stateful logic without changing your component hierarchy.
+
+Hooks are powerful and reusable.
+Hence kinds of hooks can be combined in various ways to do corresponding powerful magics.
+
+### 1. React Life-cycles and their Use Cases
+
+<!-- > 2019-08-15T21:25:29+0800 -->
+
+The hooks 101 is to imitate the whole life-cycles of the class components do.
+The instructions for references are shown below:
+
+#### Mounting:
+
+- Will Mount `useState(()=>state)`
+	- Set state on mount and before the first render.
+	- IS USED TO Set the initial state.
+	- MAY BE USED TO Calculate the first state from props perhaps.
+- Did Mount `useEffect(callback, [])`
+	- Do something with specific conditions after the first render.
+	- MAY BE USED TO Subscribes resources.
+	- MAY BE USED TO Asynchronously fetch resources required.
+
+#### Updating
+
+- Get Derived State From Props `useDerivedProps(()=>T, depends): T`
+	- Do some heavy calculations with specific conditions.
+	- MAY BE USED TO Get derived ref(values) from props and state.
+		- Get the synchronous state from source props and state.
+- Did Update `useComponentDidUpdate(callback, depends)`
+	- Do something with specific conditions except the first render.
+	- MAY BE USED TO Reset the state recording to the given props.
+- After Render `useEffect(callback)`
+	- Do something after each and every renders.
+	- MAY BE USED TO Check state to fetch asynchronously resources and hence to update the state.
+		- Check the current state and do asynchronous work if needed.
+		- It may cause some strange state/behavior if the state is altered synchronous here.
+		- For better performance, the particular patch of state may be sync in need.
+
+#### Unmounting
+
+- Will Unmount `useEffect(()=>callback, [])`
+	- Do something with specific conditions when unmount.
+	- MAY BE USED TO Unsubscribes resources.
+
+### 2. Hooks Implementations
+
+- useComponentDidUpdate
+	- callback: `Function`
+	- depends?: `any[]`
 - useDerivedProps
 	- getResolvedProps: `() => T`
 	- depends?: `any[]`
