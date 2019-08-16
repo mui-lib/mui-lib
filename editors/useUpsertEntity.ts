@@ -79,10 +79,10 @@ export const useUpsertEntity = <T extends object, P extends object, K = string>(
 	const isPatchReady = isResolvedEntityValid(resolvedEntity) && !isPatchEmpty(entityPatch);
 
 	const onCreateEntity = () => !isPatchReady || !doCreateEntity ? undefined : (
-		env && env.errorTexts.length > 0 ? alert(env.errorTexts[0]) : doCreateEntity(entityPatch)
+		(env = refEnv.current) && env.errorTexts.length > 0 ? alert(env.errorTexts[0]) : doCreateEntity(entityPatch)
 	);
 	const onUpdateEntity = () => !isPatchReady || !targetEntityId || !doUpdateEntity ? undefined : (
-		env && env.errorTexts.length > 0 ? alert(env.errorTexts[0]) : doUpdateEntity(targetEntityId, entityPatch)
+		(env = refEnv.current) && env.errorTexts.length > 0 ? alert(env.errorTexts[0]) : doUpdateEntity(targetEntityId, entityPatch)
 	);
 	// Deletion is disallowed because patch is pending to upsert.
 	const onDeleteEntity = () => isPatchReady || !targetEntityId || !doDeleteEntity ? undefined : doDeleteEntity(targetEntityId);
@@ -90,6 +90,7 @@ export const useUpsertEntity = <T extends object, P extends object, K = string>(
 	const onFieldsRendered = React.useCallback((_env: IEnvironment) => refEnv.current = env = _env, []);
 
 	// const {title, description, updatedEntity, isCreating} = state;
+	// Patch > Render Fields(Check Errors) > Use Ref to Bind the Resolved Errors
 	const onPatchChange = (patch: P) => setEntityPatchState({...patch});
 
 	return {
