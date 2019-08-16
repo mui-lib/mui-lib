@@ -175,6 +175,11 @@ What makes the differences is that,
 the props containing actions(functions) passed to `Functional Components` and `Pure Component` are slightly different,
 as the actions for `Pure Component` are usually constant while the ones for `Functional Component` are designed to be changing between renders.
 
+A function utility may be implemented
+to check the differences of values inside props,
+and ignore the differences of functional actions(having type of *function*) inside props,
+between the previous props and the next props.
+
 ## Layouts
 
 - MuiAppBar
