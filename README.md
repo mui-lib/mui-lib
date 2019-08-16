@@ -142,6 +142,32 @@ The instructions for references are shown below:
 	- getResolvedProps: `() => T`
 	- depends?: `any[]`
 
+### 3. Performance Optimizations
+
+> Ref: https://reactjs.org/docs/optimizing-performance.html
+
+The strategies and procedures practiced to optimize performance are often as coding guidelines/conventions to write bug-free and clean codes.
+
+#### Use Ref as State
+
+State are kind of ref but the values is often revealed to views.
+
+If ref values are used instead of state, asynchronous modifications should be noticed while synchronous modifications should not to avoid duplicated renders.
+
+- useDerivedStateFromProps(getDerivedState, depends): `[IState, setState]`
+	- getDerivedState: `() => IState`
+	- depends?: `any[]`
+
+#### Pure Component vs. React.memo
+
+> Ref: https://reactjs.org/docs/react-api.html#reactmemo
+
+They are claimed to be the same and it seems to be so!
+
+What makes the differences is that,
+the props containing actions(functions) passed to `Functional Components` and `Pure Component` are slightly different,
+as the actions for `Pure Component` are usually constant while the ones for `Functional Component` are designed to be changing between renders.
+
 ## Layouts
 
 - MuiAppBar
