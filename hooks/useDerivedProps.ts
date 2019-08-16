@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {areDependedValuesDifferent} from 'src/zlib/mui-lib/hooks/utils';
+import {areDependedValuesDifferent} from './utils';
 
 interface IRefNoDuplicateRenders<T> {
 	depends?: any[];

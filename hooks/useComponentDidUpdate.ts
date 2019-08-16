@@ -1,7 +1,7 @@
 'use strict';
 
 import * as React from 'react';
-import {areDependedValuesDifferent} from 'src/zlib/mui-lib/hooks/utils';
+import {areDependedValuesDifferent} from './utils';
 
 // Do something with specific conditions except the first render.
 // MAY BE USED TO Reset the State Recording to the Given Props
