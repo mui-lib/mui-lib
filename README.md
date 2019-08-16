@@ -19,8 +19,9 @@ A library of more complicated components for [material-ui](https://github.com/mu
 	- Button Dialog
 	- Dialog to Confirm
 - Hooks
-    - useComponentDidUpdate
-	- useDerivedProps
+	- useComponentDidUpdate(callback, depends)
+	- useDerivedProps(getResolvedProps, depends): `T` = React.useMemo
+    - useDerivedStateFromProps(getDerivedState, depends): `[IState, setState]`
 - Layouts
 	- Mui App Bar
 - Standalone
@@ -113,7 +114,7 @@ The instructions for references are shown below:
 
 #### Updating
 
-- Get Derived State From Props `useDerivedProps(()=>T, depends): T`
+- Get Derived State From Props `useMemo(()=>T, depends): T`
 	- Do some heavy calculations with specific conditions.
 	- MAY BE USED TO Get derived ref(values) from props and state.
 		- Get the synchronous state from source props and state.
@@ -135,10 +136,10 @@ The instructions for references are shown below:
 
 ### 2. Hooks Implementations
 
-- useComponentDidUpdate
+- useComponentDidUpdate(callback, depends)
 	- callback: `Function`
 	- depends?: `any[]`
-- useDerivedProps
+- useDerivedProps(getResolvedProps, depends): `T` = React.useMemo
 	- getResolvedProps: `() => T`
 	- depends?: `any[]`
 - useDerivedStateFromProps(getDerivedState, depends): `[IState, setState]`

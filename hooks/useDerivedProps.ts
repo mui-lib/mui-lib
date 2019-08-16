@@ -10,6 +10,7 @@ interface IRefNoDuplicateRenders<T> {
 
 // Calculate something and cache within the Function Components using React hooks.
 // MAY BE USED TO Get the derived props from the context(props/states) depends on context(props/states).
+// FIXME [DUPLICATED] Worked exactly with #React.useMemo().
 export const useDerivedProps = <T>(getResolvedProps: () => T, depends?: any[]): T => {
 	const ref = React.useRef<IRefNoDuplicateRenders<T>>();
 	// Calculate the resolved props the first time.

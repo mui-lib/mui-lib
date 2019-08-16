@@ -2,7 +2,6 @@
 
 
 import React from 'react';
-import {useDerivedProps} from '../hooks/useDerivedProps';
 import {IEnvironment, IFieldDefinition} from '../SimpleEntityEditor/definitions';
 import {IDialogEntityEditorProps} from './IDialogEntityEditor';
 
@@ -68,7 +67,7 @@ export const useUpsertEntity = <T extends object, P extends object, K = string>(
 	if (!isCreating && (!targetEntity || !targetEntityId)) {throw new Error('props given conflicted');}
 
 	// The resolved props depend on the given props, and hence should change along with it.
-	const {theRealBaseEntity, initialAssetPatch} = useDerivedProps(() => getDerivedProps(props), [baseEntity, targetEntity]);
+	const {theRealBaseEntity, initialAssetPatch} = React.useMemo(() => getDerivedProps(props), [baseEntity, targetEntity]);
 	// FIX-ME The patch should be reset when the [ target entry / base entry / open status ] changes.
 	const [entityPatch, setEntityPatchState] = React.useState((): P => initialAssetPatch);
 	const refEnv = React.useRef<IEnvironment | undefined>(undefined);
