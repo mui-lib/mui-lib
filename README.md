@@ -141,6 +141,9 @@ The instructions for references are shown below:
 - useDerivedProps
 	- getResolvedProps: `() => T`
 	- depends?: `any[]`
+- useDerivedStateFromProps(getDerivedState, depends): `[IState, setState]`
+	- getDerivedState: `() => IState`
+	- depends?: `any[]`
 
 ### 3. Performance Optimizations
 
@@ -150,13 +153,17 @@ The strategies and procedures practiced to optimize performance are often as cod
 
 #### Use Ref as State
 
-State are kind of ref but the values is often revealed to views.
+State are kind of ref but the values are often revealed to views.
 
 If ref values are used instead of state, asynchronous modifications should be noticed while synchronous modifications should not to avoid duplicated renders.
 
 - useDerivedStateFromProps(getDerivedState, depends): `[IState, setState]`
 	- getDerivedState: `() => IState`
 	- depends?: `any[]`
+- Use Derived State From Props
+	- Initialize state and reset state with specific conditions.
+	- MAY BE USED TO Get the derived state from the context(props/states) depends on context(props/states).
+	- MAY BE USED TO Substitute the React#useState.
 
 #### Pure Component vs. React.memo
 
