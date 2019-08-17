@@ -1,7 +1,7 @@
 'use strict';
 
 import * as React from 'react';
-import {areDependedValuesDifferent} from './utils';
+import {areDependedValuesDifferent} from './util-differ-depended-values';
 
 // Do something with specific conditions except the first render.
 // MAY BE USED TO Reset the State Recording to the Given Props

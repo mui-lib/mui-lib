@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {areDependedValuesDifferent} from './utils';
+import {areDependedValuesDifferent} from './util-differ-depended-values';
 
 interface IRefNoDuplicateRenders<T> {
 	depends?: any[];
