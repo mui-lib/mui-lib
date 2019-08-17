@@ -22,6 +22,8 @@ A library of more complicated components for [material-ui](https://github.com/mu
 	- useComponentDidUpdate(callback, depends)
 	- useDerivedProps(getResolvedProps, depends): `T` = React.useMemo
     - useDerivedStateFromProps(getDerivedState, depends): `[IState, setState]`
+- Hooks Utilities
+	- arePropsPureValuesEqual(prevProps, nextProps): `boolean`
 - Layouts
 	- Mui App Bar
 - Standalone
@@ -146,6 +148,12 @@ The instructions for references are shown below:
 	- getDerivedState: `() => IState`
 	- depends?: `any[]`
 
+### 2.b Hooks Utilities
+
+- arePropsPureValuesEqual(prevProps, nextProps): `boolean`
+	- prevProps: `object`
+	- nextProps: `object`
+
 ### 3. Performance Optimizations
 
 > Ref: https://reactjs.org/docs/optimizing-performance.html
@@ -169,6 +177,11 @@ If ref values are used instead of state, asynchronous modifications should be no
 #### Pure Component vs. React.memo
 
 > Ref: https://reactjs.org/docs/react-api.html#reactmemo
+>
+> [Ref:](https://reactjs.org/docs/hooks-reference.html#usememo)
+Conceptually, though, that’s what they represent:
+every value referenced inside the function should also appear in the dependencies array.
+In the future, a sufficiently advanced compiler could create this array automatically.
 
 They are claimed to be the same and it seems to be so!
 
@@ -180,6 +193,12 @@ A function utility may be implemented
 to check the differences of values inside props,
 and ignore the differences of functional actions(having type of *function*) inside props,
 between the previous props and the next props.
+
+- arePropsPureValuesEqual(prevProps, nextProps): `boolean`
+
+Furthermore, the target component should be updated when the values of the props changed.
+The same way, the depended values are usually the same set by `#useDerivedStateFromProps()`.
+Hence the solutions could be more generalized and open.
 
 ## Layouts
 
