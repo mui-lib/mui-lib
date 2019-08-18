@@ -15,17 +15,18 @@ export const useDerivedStateFromProps = <IState>(getDerivedState: () => IState, 
 		// Calculate the state the first time and every time the depends changes.
 		ref.current = getDerivedState();
 	}, depends);
-	if (!ref.current) {ref.current = getDerivedState();}
 
 	const doForceRender = React.useState<any>()[1];
 	const setState = (state: SetStateAction<IState>) => {
-		if (typeof state === 'object') {
+		if (typeof state === 'object' && !Array.isArray(state)) {
 			// FIX-ME Auto merge the state like the *Class Components* do.
 			// @see https://reactjs.org/docs/hooks-reference.html#functional-updates
 			ref.current = {...ref.current, ...state};
 		} else if (typeof state === 'function') {
 			const setStateAction: StateSetterAction<IState> = state as StateSetterAction<IState>;
 			ref.current = setStateAction(ref.current);
+		} else {
+			ref.current = state as any as IState;
 		}
 		doForceRender(state);
 	};
