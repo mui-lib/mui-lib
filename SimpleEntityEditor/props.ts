@@ -1,5 +1,6 @@
 'use strict';
 
+import * as React from 'react';
 import {_CommonFields} from './commons';
 import {FilledInputProps} from '@material-ui/core/FilledInput';
 
@@ -7,7 +8,6 @@ import {FilledInputProps} from '@material-ui/core/FilledInput';
 
 export interface IInputDom {
 	id: string;
-	name?: string;
 	value: any;
 }
 
@@ -17,7 +17,7 @@ export interface IEntityFieldWrapper extends _CommonFields.IFieldProps {
 	onFocus?: React.EventHandler<any>;
 	InputProps?: Partial<FilledInputProps>;
 
-	onChange: (event: { target: IInputDom }) => void;
+	onChange: (event: React.ChangeEvent) => void;
 }
 
 export interface IInputFieldProps extends IEntityFieldWrapper, _CommonFields.IText {
@@ -31,6 +31,8 @@ export interface ICheckboxFieldProps extends IEntityFieldWrapper, _CommonFields.
 
 // 下拉框、单选框
 export interface ISingleSelectorFieldProps extends IEntityFieldWrapper, _CommonFields.ISingleSelector {
+	value: string;
+	values: _CommonFields.ISelectorItem[];
 }
 
 // Options for grouped checkbox.
@@ -39,11 +41,6 @@ export interface IMultipleSelectorFieldProps extends IEntityFieldWrapper, _Commo
 	value?: string[];
 	// 所有的待选项
 	values: _CommonFields.ISelectorItem[];
-	// FIX-ME Make it more typed.
-	minimum?: number;
-	minimumErrorText?: string;
-	maximum?: number;
-	maximumErrorText?: string;
 }
 
 // 下拉框、单选框

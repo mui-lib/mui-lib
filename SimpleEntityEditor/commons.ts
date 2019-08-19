@@ -19,6 +19,7 @@ export namespace _CommonFields {
 	export type IFieldType = IFieldTypeText | IFieldTypeSwitch | IFieldTypeCheckbox | IFieldTypeSingleSelector | IFieldTypeMultipleSelector | IFieldTypeTextWithSuggestions
 	export type IFieldMargin = 'dense'
 	export type IFieldAutoComplete = 'off'
+	export type IFieldGroupFlexDirection = 'row' | 'column';
 
 	// As an field of a group of fields(an entity), which works for custom components/wrappers overriding the given components by #mui, like #AdvancedTextField, #TextFieldWithSuggestions, #Selectors, #GroupedCheckboxes, #GroupedRadios, and etc.
 	export interface IFieldProps {
@@ -61,6 +62,7 @@ export namespace _CommonFields {
 	export interface ISingleSelector {
 		type: IFieldTypeSingleSelector;
 		values?: ISelectorItem[];
+		direction?: _CommonFields.IFieldGroupFlexDirection;
 	}
 
 	export interface IMultipleSelector {
@@ -71,6 +73,7 @@ export namespace _CommonFields {
 		minimumErrorText?: string;
 		maximum?: number;
 		maximumErrorText?: string;
+		direction?: _CommonFields.IFieldGroupFlexDirection;
 	}
 
 	export interface ITextWithSuggestions {

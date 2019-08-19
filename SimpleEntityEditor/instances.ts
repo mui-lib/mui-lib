@@ -18,3 +18,6 @@ export const FieldTypeTextWithSuggestions: _CommonFields.IFieldTypeTextWithSugge
 // Instances of some supported field props.
 export const FieldMarginDense: _CommonFields.IFieldMargin = 'dense';
 export const FieldAutoCompleteOff: _CommonFields.IFieldAutoComplete = 'off';
+
+export const FieldGroupFlexDirectionRow: _CommonFields.IFieldGroupFlexDirection = 'row';
+export const FieldGroupFlexDirectionColumn: _CommonFields.IFieldGroupFlexDirection = 'column';

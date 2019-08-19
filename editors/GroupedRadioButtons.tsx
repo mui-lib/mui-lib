@@ -3,16 +3,16 @@
 import React from 'react';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Checkbox from '@material-ui/core/Checkbox';
-import {IMultipleSelectorFieldProps} from '../SimpleEntityEditor/props';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
+import {ISingleSelectorFieldProps} from '../SimpleEntityEditor/props';
 
 // import {ISharedFieldProps} from 'src/EntityEditorExample/components/SimpleEntityEditor/SimpleEntityEditor';
 
 // export interface IProps1 extends IRawProps, StandardTextFieldProps {}
-export interface IProps extends IMultipleSelectorFieldProps {
+export interface IProps extends ISingleSelectorFieldProps {
 	// Whether to show the helper text when not focusing.
 	showHelperTextWhenNotFocusing: boolean;
 	errorText: string;
@@ -36,7 +36,7 @@ export interface IState {
 //
 // Think about the differences about helper text, and placeholder, label, and error text.
 // @see https://material.io/guidelines/components/text-fields.html
-export class GroupedCheckboxes extends React.PureComponent<IProps> {
+export class GroupedRadioButtons extends React.PureComponent<IProps> {
 	mTimer: number;
 	otherOnBlur?: (param: any) => void;
 	otherOnFocus?: (param: any) => void;
@@ -68,23 +68,9 @@ export class GroupedCheckboxes extends React.PureComponent<IProps> {
 		setTimeout(() => this.setState({isFocusing: false, isEdited: true}), 45);
 	};
 
-	onChange = (key: string) => ({target}: React.ChangeEvent, checked: boolean) => {
-		const {onChange, id, values, value, minimum, minimumErrorText, maximum, maximumErrorText} = this.props;
-		const selected = new Map();
-		if (value) {value.map((key: string) => selected[key] = true);}
-		// console.log(values, value, key, checked);
-		selected[key] = checked;
-		const _value = values.map(item => item.value).filter(item => selected[item]);
-		if (minimum && _value.length < minimum) {return alert(minimumErrorText);}
-		if (maximum && _value.length > maximum) {return alert(maximumErrorText);}
-		onChange({target: {id: id, value: _value}} as any as React.ChangeEvent);
-	};
-
 	render() {
 		const {isFocusing, isEdited} = this.state;
-		const {showHelperTextWhenNotFocusing, helperText, errorText, InputProps, onFocus, onBlur, onChange, id, label, values, value, placeholder, multiline, minimum, minimumErrorText, maximum, maximumErrorText, ...others} = this.props;
-		const selected = new Map();
-		if (value) {value.map((key: string) => selected[key] = true);}
+		const {showHelperTextWhenNotFocusing, helperText, errorText, InputProps, onFocus, onBlur, onChange, id, label, values, value, placeholder, multiline, direction, ...others} = this.props;
 		// Save the passed listeners in local.
 		if (onFocus) {this.otherOnFocus = onFocus;}
 		if (onBlur) {this.otherOnBlur = onBlur;}
@@ -116,21 +102,22 @@ export class GroupedCheckboxes extends React.PureComponent<IProps> {
 				{...others}
 			>
 				<FormLabel component="legend">{label}</FormLabel>
-				<FormGroup>
-					{values.map(item => (
+				<RadioGroup
+					id={id} name={id}
+					onChange={onChange}
+					value={value || ''}
+					style={{flexDirection: direction}}
+				>
+					{values && values.length > 0 ? values.map(item => (
 						<FormControlLabel
 							key={item.value}
-							control={
-								<Checkbox
-									checked={Boolean(selected[item.value])}
-									onChange={this.onChange(item.value)}
-									value={item.value}
-								/>
-							}
+							id={id} name={id}
 							label={item.label}
+							value={item.value}
+							control={<Radio/>}
 						/>
-					))}
-				</FormGroup>
+					)) : undefined}
+				</RadioGroup>
 				<FormHelperText>{realHelperText || placeholder}</FormHelperText>
 			</FormControl>
 		);

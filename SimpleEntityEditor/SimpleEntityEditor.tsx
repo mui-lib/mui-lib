@@ -28,6 +28,7 @@ export interface IProps {
 	Checkbox?: React.ReactNode,
 	Switch?: React.ReactNode,
 	Selector?: React.ReactNode,
+	GroupedRadioButtons?: React.ReactNode,
 	GroupedCheckboxes?: React.ReactNode,
 	TextFieldWithSuggestions?: React.ReactNode,
 	// The expected action is updating an entity if the targetEntity._id is set.
@@ -72,6 +73,7 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 			}
 		}
 		if (type === FieldTypeSwitch || type === FieldTypeCheckbox) {value = checked;}
+		if (value === undefined && checked !== undefined) {value = checked;}
 		const {onPatchChange, targetEntity, entityPatch} = this.props;
 		if (targetEntity[id] === value) {
 			delete entityPatch[id];
@@ -111,9 +113,12 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 				if (!FieldEditor) {console.warn('The needed #TextFieldWithSuggestions is not loaded!');}
 				break;
 			case 'selector':
-			case 'radio':
 				FieldEditor = this.props.Selector;
 				if (!FieldEditor) {console.warn('The expected #Selector is not loaded!');}
+				break;
+			case 'radio':
+				FieldEditor = this.props.GroupedRadioButtons;
+				if (!FieldEditor) {console.warn('The expected #GroupedRadioButtons is not loaded!');}
 				break;
 			case 'checkbox':
 				FieldEditor = this.props.Checkbox;
