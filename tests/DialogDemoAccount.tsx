@@ -24,13 +24,13 @@ export const DialogUpsertAccount = (props: IProps) => {
 			DialogProps={{
 				fullScreen: false,
 				getTitle: RAccount.getDialogTitle,
+				getUpsertButtonLabel: RAccount.getSubmitButtonLabel,
 			}}
 			isCreating={isCreating} baseEntity={baseEntity}
 			targetEntity={targetEntity} targetEntityId={targetEntity ? targetEntity.id : undefined}
 			getUnifiedEntity={AccountUtil.getUnifiedAccount}
 			isResolvedEntityValid={AccountUtil.isAccountPatchValid}
 			fields={fields}
-			getUpsertButtonLabel={RAccount.getSubmitButtonLabel}
 		/>
 	);
 };

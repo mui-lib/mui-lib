@@ -21,3 +21,13 @@ interface IResolvedDialogDescription {
 }
 
 export interface IResolvedDialogProps extends IResolvedDialog, IResolvedDialogTitle, IResolvedDialogDescription {}
+
+interface IResolvedDialogUpsertAction {
+	labelUpsertButton: string;
+}
+
+interface IResolvedDialogDeleteAction {
+	labelDeleteButton?: string;
+}
+
+export interface IResolvedUpsertDialogDefinition extends IResolvedDialogProps, IResolvedDialogUpsertAction, IResolvedDialogDeleteAction {}

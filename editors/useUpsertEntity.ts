@@ -2,7 +2,7 @@
 
 
 import React from 'react';
-import {IBaseDialogDefinition} from '../dialogs/definitions';
+import {IUpsertDialogDefinition} from '../dialogs/definitions';
 import {IEnvironment, IFieldDefinition} from '../SimpleEntityEditor/definitions';
 import {IDialogEntityEditorProps} from './IDialogEntityEditor';
 
@@ -14,17 +14,13 @@ const isPatchEmpty = (patch: object): boolean => {
 
 // The patches used for creation and modification may differ.
 export interface IEditorUpsertEntityProps<T extends object, P extends object, K = string> extends IDialogEntityEditorProps<T, P, K> {
-	DialogProps: IBaseDialogDefinition;
+	DialogProps: IUpsertDialogDefinition;
 	targetEntityId?: K;
 
 	getUnifiedEntity: (entity: T) => T;
 	isResolvedEntityValid: (entity: T) => boolean;
 
 	fields: IFieldDefinition[];
-	// FIX-ME Required upsert.
-	getUpsertButtonLabel: (isCreating: boolean) => string;
-	// Optional deletion.
-	labelButtonDelete?: string;
 }
 
 // Deconstruct from the real props to avoid conflict.

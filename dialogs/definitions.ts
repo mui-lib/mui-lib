@@ -8,6 +8,8 @@
 
 import * as React from 'react';
 
+type GetUpsertString = (isCreating: boolean) => string
+
 interface IDialogProps {
 	fullScreen?: boolean;
 }
@@ -26,6 +28,17 @@ interface IDialogContent {
 }
 
 export interface IBaseDialogDefinition extends IDialogProps, IDialogTitle, IDialogContent {}
+
+interface IDialogUpsertAction {
+	labelUpsertButton?: string;
+	getUpsertButtonLabel?: GetUpsertString;
+}
+
+interface IDialogDeleteAction {
+	labelDeleteButton?: string;
+}
+
+export interface IUpsertDialogDefinition extends IBaseDialogDefinition, IDialogUpsertAction, IDialogDeleteAction {}
 
 export interface IDialogActionButton {
 	label: string;

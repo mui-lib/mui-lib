@@ -8,7 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import IconClose from '@material-ui/icons/Close';
-import {getResolvedOptions} from '../dialogs/helpers';
+import {getResolvedUpsertOptions} from '../dialogs/helpers';
 import {MuiDialogTitleBar} from '../layouts/MuiDialogTitleBar';
 import {MuiAppBar} from '../layouts/MuiAppBar';
 import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
@@ -20,10 +20,10 @@ import {IEditorUpsertEntityProps, useUpsertEntity} from './useUpsertEntity';
 
 // FIX-ME Fix the so much more props and provide a flexible visual interactions.
 const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(props: IEditorUpsertEntityProps<T, P, K>) => {
-	const {open, DialogProps, fields, getUpsertButtonLabel, labelButtonDelete} = props;
+	const {open, DialogProps, fields} = props;
 	const {isCreating, doDismissDialog} = props;
 
-	const options = getResolvedOptions({isCreating}, DialogProps);
+	const options = getResolvedUpsertOptions({isCreating}, DialogProps);
 
 	const wrapper = useUpsertEntity(props);
 	const {isPatchReady, entityPatch, theRealBaseEntity} = wrapper;
@@ -40,7 +40,7 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 				}
 				rightDom={
 					<Button color="inherit" onClick={isCreating ? onCreateEntity : onUpdateEntity}>
-						{getUpsertButtonLabel(isCreating)}
+						{options.labelUpsertButton}
 					</Button>
 				}
 			/>
@@ -90,8 +90,8 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 				<br/>
 			</DialogContent>
 			<DialogActions>
-				{isCreating || !onDeleteEntity || !labelButtonDelete ? undefined : <Button variant='contained' color='primary' disabled={isPatchReady} onClick={onDeleteEntity}>{labelButtonDelete}</Button>}
-				<Button variant='contained' color='primary' disabled={!isPatchReady} onClick={isCreating ? onCreateEntity : onUpdateEntity}>{getUpsertButtonLabel(isCreating)}</Button>
+				{isCreating || !onDeleteEntity || !options.labelDeleteButton ? undefined : <Button variant='contained' color='primary' disabled={isPatchReady} onClick={onDeleteEntity}>{options.labelDeleteButton}</Button>}
+				<Button variant='contained' color='primary' disabled={!isPatchReady} onClick={isCreating ? onCreateEntity : onUpdateEntity}>{options.labelUpsertButton}</Button>
 			</DialogActions>
 		</Dialog>
 	);

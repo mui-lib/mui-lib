@@ -2,8 +2,8 @@
 
 import React from 'react';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import {IBaseDialogDefinition} from './definitions';
-import {IResolvedDialogProps} from './props';
+import {IBaseDialogDefinition, IUpsertDialogDefinition} from './definitions';
+import {IResolvedDialogProps, IResolvedUpsertDialogDefinition} from './props';
 
 export interface IDialogEnvironment {
 	isCreating: boolean;
@@ -20,5 +20,15 @@ export const getResolvedOptions = ({isCreating}: IDialogEnvironment, definition:
 		useExitIcon: def.fullScreen ? true : def.useExitIcon,
 		title: getTitle ? getTitle(isCreating) : title || 'Dialog Title',
 		domDescription: domContentDescription,
+	};
+};
+
+export const getResolvedUpsertOptions = (env: IDialogEnvironment, definition: IUpsertDialogDefinition): IResolvedUpsertDialogDefinition => {
+	const {labelUpsertButton, getUpsertButtonLabel, labelDeleteButton, ...def} = definition;
+	return {
+		// WARNING MAY BE TRIGGERED WHEN EXTRA PROPS ARE MERGED.
+		...getResolvedOptions(env, def),
+		labelDeleteButton: labelDeleteButton,
+		labelUpsertButton: getUpsertButtonLabel ? getUpsertButtonLabel(env.isCreating) : labelUpsertButton || 'Commit',
 	};
 };
