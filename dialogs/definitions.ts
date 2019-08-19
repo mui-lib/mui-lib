@@ -10,36 +10,45 @@ import * as React from 'react';
 
 type GetUpsertString = (isCreating: boolean) => string
 
-interface IDialogProps {
+interface IBaseConfigure {
 	fullScreen?: boolean;
 	minWidth?: string;
 }
 
-interface IDialogTitle {
+interface IBaseTitle {
 	useTitleBar?: boolean;
 	useExitIcon?: boolean;
-	title?: string;
-	getTitle?: (isCreating: boolean) => string;
+	title: string;
 }
 
-interface IDialogContent {
+interface IBaseDescription {
 	description?: string;
-	getDescription?: (isCreating: boolean) => string;
 	domDescription?: React.ReactNode;
 }
 
-export interface IBaseDialogDefinition extends IDialogProps, IDialogTitle, IDialogContent {}
+// The configurations and definitions for a basic dialog.
+export interface IBaseDialogDefinition extends IBaseConfigure, IBaseTitle, IBaseDescription {}
 
-interface IDialogUpsertAction {
+// FIX-ME Duplicated declarations.
+interface IUpsertTitle extends Partial<IBaseTitle> {
+	getTitle?: (isCreating: boolean) => string;
+}
+
+interface IUpsertDescription extends IBaseDescription {
+	getDescription?: (isCreating: boolean) => string;
+}
+
+interface IButtonUpsert {
 	labelUpsertButton?: string;
 	getUpsertButtonLabel?: GetUpsertString;
 }
 
-interface IDialogDeleteAction {
+interface IButtonDelete {
 	labelDeleteButton?: string;
 }
 
-export interface IUpsertDialogDefinition extends IBaseDialogDefinition, IDialogUpsertAction, IDialogDeleteAction {}
+// Dialog to upsert/delete entities.
+export interface IUpsertDialogDefinition extends IBaseConfigure, IUpsertTitle, IUpsertDescription, IButtonUpsert, IButtonDelete {}
 
 interface IButtonConfirm {
 	labelConfirmButton: string;
@@ -52,7 +61,7 @@ interface IButtonCancel {
 
 // Dialog used to Confirm/Cancel tasks.
 // FIX-ME Extends required props only.
-export interface IConfirmDialogPropsDefinition extends IBaseDialogDefinition, IButtonConfirm, IButtonCancel {}
+export interface IConfirmDialogDefinition extends IBaseDialogDefinition, IButtonConfirm, IButtonCancel {}
 
 export interface IDialogActionButton {
 	label: string;

@@ -32,4 +32,16 @@ interface IResolvedDialogDeleteAction {
 }
 
 // Dialog to upsert/delete entities.
-export interface IResolvedUpsertDialogDefinition extends IResolvedDialogProps, IResolvedDialogUpsertAction, IResolvedDialogDeleteAction {}
+export interface IResolvedUpsertDialogProps extends IResolvedDialogProps, IResolvedDialogUpsertAction, IResolvedDialogDeleteAction {}
+
+interface IButtonConfirm {
+	labelConfirmButton: string;
+}
+
+interface IButtonCancel {
+	labelCancelButton?: string;
+}
+
+// Dialog used to Confirm/Cancel tasks.
+export interface IResolvedConfirmDialogProps extends IResolvedDialogProps, IButtonConfirm, IButtonCancel {}
+
