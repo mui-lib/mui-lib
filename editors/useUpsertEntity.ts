@@ -2,7 +2,7 @@
 
 
 import React from 'react';
-import {IBaseDialogDefinition} from 'src/mui-lib/dialogs/definitions';
+import {IBaseDialogDefinition} from '../dialogs/definitions';
 import {IEnvironment, IFieldDefinition} from '../SimpleEntityEditor/definitions';
 import {IDialogEntityEditorProps} from './IDialogEntityEditor';
 

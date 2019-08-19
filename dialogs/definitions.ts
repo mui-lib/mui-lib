@@ -21,6 +21,7 @@ interface IDialogTitle {
 
 interface IDialogContent {
 	description?: string;
+	getDescription?: (isCreating: boolean) => string;
 	domDescription?: React.ReactNode;
 }
 

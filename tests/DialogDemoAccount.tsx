@@ -21,12 +21,12 @@ export const DialogUpsertAccount = (props: IProps) => {
 	return (
 		<TheDialogUpsertAccount
 			{...others}
-			isCreating={isCreating} baseEntity={baseEntity}
-			targetEntity={targetEntity} targetEntityId={targetEntity ? targetEntity.id : undefined}
 			DialogProps={{
 				fullScreen: false,
 				getTitle: RAccount.getDialogTitle,
 			}}
+			isCreating={isCreating} baseEntity={baseEntity}
+			targetEntity={targetEntity} targetEntityId={targetEntity ? targetEntity.id : undefined}
 			getUnifiedEntity={AccountUtil.getUnifiedAccount}
 			isResolvedEntityValid={AccountUtil.isAccountPatchValid}
 			fields={fields}

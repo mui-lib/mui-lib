@@ -2,17 +2,17 @@
 
 import React from 'react';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import {IBaseDialogDefinition} from 'src/mui-lib/dialogs/definitions';
-import {IResolvedDialogProps} from 'src/mui-lib/dialogs/props';
+import {IBaseDialogDefinition} from './definitions';
+import {IResolvedDialogProps} from './props';
 
 export interface IDialogEnvironment {
 	isCreating: boolean;
 }
 
 export const getResolvedOptions = ({isCreating}: IDialogEnvironment, definition: IBaseDialogDefinition): IResolvedDialogProps => {
-	const {title, getTitle, description, domDescription, ...def} = definition;
+	const {title, getTitle, description, getDescription, domDescription, ...def} = definition;
 	const domContentDescription = domDescription ? domDescription : (
-		description ? (<DialogContentText>{description}</DialogContentText>) : undefined
+		getDescription || description ? (<DialogContentText>{getDescription ? getDescription(isCreating) : description}</DialogContentText>) : undefined
 	);
 	return {
 		...def,
