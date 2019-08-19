@@ -23,7 +23,10 @@ export const DialogUpsertAccount = (props: IProps) => {
 			{...others}
 			isCreating={isCreating} baseEntity={baseEntity}
 			targetEntity={targetEntity} targetEntityId={targetEntity ? targetEntity.id : undefined}
-			fullScreen={false} title={RAccount.getDialogTitle(isCreating)}
+			DialogProps={{
+				fullScreen: false,
+				getTitle: RAccount.getDialogTitle,
+			}}
 			getUnifiedEntity={AccountUtil.getUnifiedAccount}
 			isResolvedEntityValid={AccountUtil.isAccountPatchValid}
 			fields={fields}

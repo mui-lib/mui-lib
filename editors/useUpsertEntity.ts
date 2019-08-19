@@ -2,6 +2,7 @@
 
 
 import React from 'react';
+import {IBaseDialogDefinition} from 'src/mui-lib/dialogs/definitions';
 import {IEnvironment, IFieldDefinition} from '../SimpleEntityEditor/definitions';
 import {IDialogEntityEditorProps} from './IDialogEntityEditor';
 
@@ -13,12 +14,7 @@ const isPatchEmpty = (patch: object): boolean => {
 
 // The patches used for creation and modification may differ.
 export interface IEditorUpsertEntityProps<T extends object, P extends object, K = string> extends IDialogEntityEditorProps<T, P, K> {
-	fullScreen: boolean;
-	title: string;
-	// getTitle: (isCreating: boolean) => string;
-	// domDialogTitleBar: React.ReactNode;
-	description?: string;
-	// domDialogDescription?: React.ReactNode;
+	DialogProps: IBaseDialogDefinition;
 	targetEntityId?: K;
 
 	getUnifiedEntity: (entity: T) => T;

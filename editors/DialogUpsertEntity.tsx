@@ -2,12 +2,14 @@
 
 import React from 'react';
 import {Dialog} from '@material-ui/core';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import IconClose from '@material-ui/icons/Close';
+import {getResolvedOptions} from 'src/mui-lib/dialogs/helpers';
+import {MuiDialogTitleBar} from 'src/mui-lib/layouts/MuiDialogTitleBar';
 import {MuiAppBar} from '../layouts/MuiAppBar';
 import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
 import {FieldCheckbox} from '../FieldCheckbox/FieldCheckbox';
@@ -18,17 +20,19 @@ import {IEditorUpsertEntityProps, useUpsertEntity} from './useUpsertEntity';
 
 // FIX-ME Fix the so much more props and provide a flexible visual interactions.
 const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(props: IEditorUpsertEntityProps<T, P, K>) => {
-	const {open, fullScreen, title, description, fields, getUpsertButtonLabel, labelButtonDelete} = props;
+	const {open, DialogProps, fields, getUpsertButtonLabel, labelButtonDelete} = props;
 	const {isCreating, doDismissDialog} = props;
+
+	const options = getResolvedOptions({isCreating}, DialogProps);
 
 	const wrapper = useUpsertEntity(props);
 	const {isPatchReady, entityPatch, theRealBaseEntity} = wrapper;
 	const {onPatchChange, onFieldsRendered, onCreateEntity, onUpdateEntity, onDeleteEntity} = wrapper;
 
-	return (
-		<Dialog open={open} fullScreen={fullScreen} onClose={doDismissDialog}>
+	const title = options.fullScreen || options.useTitleBar ? (
+		options.fullScreen ? (
 			<MuiAppBar
-				title={title}
+				title={options.title}
 				leftDom={
 					<IconButton color="inherit" onClick={doDismissDialog}>
 						<IconClose/>
@@ -40,9 +44,37 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 					</Button>
 				}
 			/>
+		) : (
+			<MuiAppBar
+				title={options.title}
+				rightDom={options.useExitIcon ? (
+					<IconButton color="inherit" onClick={doDismissDialog}>
+						<IconClose/>
+					</IconButton>
+				) : undefined}
+			/>
+		)
+	) : (
+		options.useExitIcon ? (
+			<MuiDialogTitleBar
+				title={options.title}
+				domExitButton={
+					<IconButton color="inherit" onClick={doDismissDialog}>
+						<IconClose/>
+					</IconButton>
+				}
+			/>
+		) : (
+			<DialogTitle style={{textAlign: 'center'}}>{options.title}</DialogTitle>
+		)
+	);
+	// USE APP BAR FOR FULL SCREEN DIALOG, WITH .
+	return (
+		<Dialog open={open} fullScreen={options.fullScreen} onClose={doDismissDialog} disableBackdropClick={options.useExitIcon} disableEscapeKeyDown={false}>
+			{title}
 			<DialogContent>
 				<br/>
-				{description ? <DialogContentText>{description}</DialogContentText> : undefined}
+				{options.domDescription}
 				<SimpleEntityEditor
 					onPatchChange={onPatchChange}
 					onFieldsRendered={onFieldsRendered}

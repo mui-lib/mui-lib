@@ -88,6 +88,31 @@ Label + Placeholder + Helper Text(with Error Checker)
 	- title: `string`
 	- onConfirm: `() => any`
 
+> The Design Principle: Easy to Use while Powerful to Customize. --Fisher
+
+Complex dialogs, the dialogs containing complex components,
+tend to be dismissed explicitly with cautions,
+or they can be full-screen to gather the full attentions.
+
+While simple dialogs, on the contrary,
+are okay to be easily dismissed,
+worked as real/normal dialogs.
+
+Hence a dialog can have the following default and customizable configurations:
+
+- Normal Dialogs
+	- `Use App Bar` Whether to use a app bar. `optional`
+		- Do Centralize and Bold Title if No App Bar
+	- Centralize Title `to-be-supported`
+	- `Exit Icon` on the Right Corner `optional`
+		- Be Cautious to Dismiss Dialog
+	- Cautious `to-be-supported`
+- Full-screen Dialogs
+	- Use App Bar By default
+	- `Title` inside the App Bar Aligned on the Left
+	- `Exit Icon/Button` inside the App Bar on the Left
+	- `Confirm Icon/Button` inside the App Bar on the Right
+
 ## Hooks
 
 > [Ref:](https://reactjs.org/docs/hooks-intro.html#its-hard-to-reuse-stateful-logic-between-components)
