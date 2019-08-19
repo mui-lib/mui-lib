@@ -92,6 +92,7 @@ export const useUpsertEntity = <T extends object, P extends object, K = string>(
 		onPatchChange,
 		onFieldsRendered,
 
+		onUpsertEntity: isCreating ? onCreateEntity : onUpdateEntity,
 		onCreateEntity,
 		onUpdateEntity,
 		onDeleteEntity,
