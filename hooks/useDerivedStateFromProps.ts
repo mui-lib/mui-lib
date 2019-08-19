@@ -4,7 +4,7 @@ import React from 'react';
 
 type StateSetterAction<IState> = (state: IState) => IState
 // @see https://stackoverflow.com/questions/39713349/make-all-properties-within-a-typescript-interface-optional
-type SetStateAction<IState> = Partial<IState> | StateSetterAction<IState>
+type SetStateAction<IState> = IState | Partial<IState> | StateSetterAction<IState>
 
 // Initialize state and reset state with specific conditions.
 // MAY BE USED TO Get the derived state from the context(props/states) depends on context(props/states).
