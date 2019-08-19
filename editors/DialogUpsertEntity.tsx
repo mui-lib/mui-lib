@@ -19,7 +19,7 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 	const {open, DialogProps, fields} = props;
 	const {isCreating, doDismissDialog} = props;
 
-	const {labelUpsertButton, labelDeleteButton, ...options} = getResolvedUpsertOptions({isCreating}, DialogProps);
+	const {minWidth, labelUpsertButton, labelDeleteButton, ...options} = getResolvedUpsertOptions({isCreating}, DialogProps);
 
 	const wrapper = useUpsertEntity(props);
 	const {isPatchReady, entityPatch, theRealBaseEntity} = wrapper;
@@ -35,7 +35,7 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 				doDismissDialog={doDismissDialog}
 				onUpsertEntity={onUpsertEntity}
 			/>
-			<DialogContent>
+			<DialogContent style={{minWidth: minWidth}}>
 				<br/>
 				{options.domDescription}
 				<SimpleEntityEditor

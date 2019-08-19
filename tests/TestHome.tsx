@@ -50,9 +50,12 @@ const TheTestHome = () => {
 				<DialogToConfirm
 					buttonText={'Go Through'}
 					buttonProps={{color: 'primary', variant: 'contained'}}
-					dialogTitle={'Have Dinner?'}
-					buttonConfirmText={'Okay'}
 					onConfirm={() => console.log('confirmed')}
+					DialogProps={{
+						minWidth: '280px',
+						title: 'Have Dinner?',
+						labelConfirmButton: 'Okay',
+					}}
 				/>
 			</DemoSection>
 			<DemoSection title={'FieldCheckbox'}>

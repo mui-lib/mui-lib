@@ -108,10 +108,15 @@ Hence a dialog can have the following default and customizable configurations:
 		- Be Cautious to Dismiss Dialog
 	- Cautious `to-be-supported`
 - Full-screen Dialogs
-	- Use App Bar By default
+	- Always Use App Bar
 	- `Title` inside the App Bar Aligned on the Left
 	- `Exit Icon/Button` inside the App Bar on the Left
 	- `Confirm Icon/Button` inside the App Bar on the Right
+- Button to Confirm Dialogs
+	- No App Bar is Used
+	- `Title` Aligned on the Left or Center
+	- Often No Description is Expected
+
 
 ## Hooks
 

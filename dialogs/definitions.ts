@@ -12,6 +12,7 @@ type GetUpsertString = (isCreating: boolean) => string
 
 interface IDialogProps {
 	fullScreen?: boolean;
+	minWidth?: string;
 }
 
 interface IDialogTitle {
@@ -39,6 +40,19 @@ interface IDialogDeleteAction {
 }
 
 export interface IUpsertDialogDefinition extends IBaseDialogDefinition, IDialogUpsertAction, IDialogDeleteAction {}
+
+interface IButtonConfirm {
+	labelConfirmButton: string;
+}
+
+interface IButtonCancel {
+	// If being set, the dialog will be #disableBackdropClick.
+	labelCancelButton?: string;
+}
+
+// Dialog used to Confirm/Cancel tasks.
+// FIX-ME Extends required props only.
+export interface IConfirmDialogPropsDefinition extends IBaseDialogDefinition, IButtonConfirm, IButtonCancel {}
 
 export interface IDialogActionButton {
 	label: string;
