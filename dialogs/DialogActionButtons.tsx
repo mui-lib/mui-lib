@@ -23,10 +23,10 @@ interface IProps {
 	buttonOptions?: object;
 }
 
-// A #ButtonDialog rendering a button by default which when be clicked will pop a dialog mainly to confirm/notice/hint something.
+// A #DialogActionButtons rendering a button by default which when be clicked will pop a dialog mainly to confirm/notice/hint something.
 // Names could also be: #DialogConfirmation, #DialogNotice, #SimpleDialog, #ConfirmationDialog.
 // @see https://material-ui.com/demos/dialogs/
-const TheButtonDialog = (props: IProps) => {
+export const DialogActionButtons: React.FC<IProps> = React.memo<IProps>((props: IProps) => {
 	// The uncontrolled state of switch between a #dialog and a #button.
 	const [dialogSwitch, setDialogSwitch] = useState(false);
 	const {title, content, actions, buttonContent, buttonOptions = {}} = props;
@@ -69,6 +69,4 @@ const TheButtonDialog = (props: IProps) => {
 			{renderDialog()}
 		</div>
 	);
-};
-
-export const ButtonDialog: React.FC<IProps> = React.memo<IProps>(TheButtonDialog);
+});

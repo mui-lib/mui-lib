@@ -1,9 +1,9 @@
 'use strict';
 
 import React from 'react';
-import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
-import {IEnvironment, IInputFieldDefinition} from '../SimpleEntityEditor/definitions';
-import {IInputFieldProps} from '../SimpleEntityEditor/props';
+import {AdvancedTextField} from './AdvancedTextField';
+import {IEnvironment, IInputFieldDefinition} from './definitions';
+import {IInputFieldProps} from './props';
 
 interface IProps extends IInputFieldDefinition, IInputFieldProps {
 	// @see #AdvancedTextField.

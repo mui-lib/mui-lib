@@ -7,7 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
-import {ISingleSelectorFieldProps} from '../SimpleEntityEditor/props';
+import {ISingleSelectorFieldProps} from './props';
 
 // import {ISharedFieldProps} from 'src/EntityEditorExample/components/SimpleEntityEditor/SimpleEntityEditor';
 

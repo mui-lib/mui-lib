@@ -6,13 +6,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import {getResolvedUpsertOptions} from '../dialogs/helpers';
-import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
-import {FieldCheckbox} from '../FieldCheckbox/FieldCheckbox';
-import {FieldSwitch} from '../FieldSwitch/FieldSwitch';
-import {GroupedCheckboxes} from '../GroupedCheckboxes/GroupedCheckboxes';
-import {SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
+import {AdvancedTextField} from './AdvancedTextField';
 import {DialogUpsertEntityTitleBar} from './DialogUpsertEntityTitleBar';
+import {FieldCheckbox} from './FieldCheckbox';
 import {FieldSingleSelector} from './FieldSingleSelector';
+import {FieldSwitch} from './FieldSwitch';
+import {GroupedCheckboxes} from './GroupedCheckboxes';
+import {SimpleEntityEditor} from './SimpleEntityEditor';
 import {IEditorUpsertEntityProps, useUpsertEntity} from './useUpsertEntity';
 
 // FIX-ME Fix the so much more props and provide a flexible visual interactions.

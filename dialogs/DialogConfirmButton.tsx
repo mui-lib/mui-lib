@@ -6,8 +6,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import {IConfirmDialogDefinition} from '../dialogs/definitions';
-import {getResolvedConfirmationOptions} from '../dialogs/helpers';
+import {IConfirmDialogDefinition} from './definitions';
+import {getResolvedConfirmationOptions} from './helpers';
 
 interface IProps {
 	disabled?: boolean;
@@ -32,10 +32,9 @@ export interface IButtonProps {
 // Rendering a button triggering a dialog to confirm something.
 //
 // FIX-ME It is duplicate with the #ButonDialog.
-// FIX-ME Naming to #dialogs/ButtonConfirmDialog.
 //
 // The state of dialog switch is uncontrolled.
-export const DialogToConfirm: React.FC<IProps> = React.memo<IProps>((props: IProps) => {
+export const DialogConfirmButton: React.FC<IProps> = React.memo<IProps>((props: IProps) => {
 	const {DialogProps, disabled, buttonText, buttonProps} = props;
 
 	const [dialogSwitch, setDialogSwitch] = useState(false);

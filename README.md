@@ -16,8 +16,8 @@ A library of more complicated components for [material-ui](https://github.com/mu
 		- Field Switch
 		- Grouped Checkboxes
 - Dialogs
-	- Button Dialog
-	- Dialog to Confirm
+	- Dialog with Action Buttons
+	- Dialog to Confirm Button
 - Hooks
 	- useComponentDidUpdate(callback, depends)
 	- useDerivedProps(getResolvedProps, depends): `T` = React.useMemo
@@ -80,11 +80,11 @@ Label + Placeholder + Helper Text(with Error Checker)
 > [Ref:](https://material.io/design/components/dialogs.html)
 > Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.
 
-- Button Dialog
+- Dialog with Action Buttons
 	- title: `string`
 	- content?: `string`
 	- actions: `IButtonAction[]`
-- Dialog to Confirm
+- Dialog to Confirm Button
 	- title: `string`
 	- onConfirm: `() => any`
 
@@ -108,15 +108,10 @@ Hence a dialog can have the following default and customizable configurations:
 		- Be Cautious to Dismiss Dialog
 	- Cautious `to-be-supported`
 - Full-screen Dialogs
-	- Always Use App Bar
+	- Use App Bar By default
 	- `Title` inside the App Bar Aligned on the Left
 	- `Exit Icon/Button` inside the App Bar on the Left
 	- `Confirm Icon/Button` inside the App Bar on the Right
-- Button to Confirm Dialogs
-	- No App Bar is Used
-	- `Title` Aligned on the Left or Center
-	- Often No Description is Expected
-
 
 ## Hooks
 

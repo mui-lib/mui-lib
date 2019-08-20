@@ -1,8 +1,8 @@
 'use strict';
 
 
-import {IInputFieldDefinition} from '../SimpleEntityEditor/definitions';
-import {FieldAutoCompleteOff, FieldMarginDense, FieldTypeString} from '../SimpleEntityEditor/instances';
+import {IInputFieldDefinition} from '../editors/definitions';
+import {FieldAutoCompleteOff, FieldMarginDense, FieldTypeString} from '../editors/instances';
 
 export const R = {
 	getSubmitButtonLabel: (isCreating: boolean) => isCreating ? 'Create' : 'Save Changes',

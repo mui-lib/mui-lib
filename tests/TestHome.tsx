@@ -1,14 +1,14 @@
 'use strict';
 
 import React, {useState} from 'react';
-import {ButtonDialog} from '../ButtonDialog/ButtonDialog';
+import {AdvancedTextField} from '../editors/AdvancedTextField';
+import {FieldCheckbox} from '../editors/FieldCheckbox';
+import {FieldSwitch} from '../editors/FieldSwitch';
+import {SimpleEntityEditor} from '../editors/SimpleEntityEditor';
+import {SimpleFieldEditor} from '../editors/SimpleFieldEditor';
 import {CountdownBySeconds} from '../CountdownBySeconds/CountdownBySeconds';
-import {DialogToConfirm} from '../DialogToConfirm/DialogToConfirm';
-import {FieldCheckbox} from '../FieldCheckbox/FieldCheckbox';
-import {FieldSwitch} from '../FieldSwitch/FieldSwitch';
-import {AdvancedTextField} from '../AdvancedTextField/AdvancedTextField';
-import {SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
-import {SimpleFieldEditor} from '../SimpleFieldEditor/SimpleFieldEditor';
+import {DialogActionButtons} from '../dialogs/DialogActionButtons';
+import {DialogConfirmButton} from '../dialogs/DialogConfirmButton';
 import {DialogDemoAccount} from './DialogDemoAccount';
 import {DemoSection} from './DemoSection';
 import {fields as _fields} from './resources';
@@ -38,16 +38,16 @@ const TheTestHome = () => {
 			<DemoSection title={'CountdownBySeconds'}>
 				<span>There are <CountdownBySeconds seconds={30}/> seconds left to have supper now!</span>
 			</DemoSection>
-			<DemoSection title={'ButtonDialog'}>
-				<ButtonDialog
+			<DemoSection title={'DialogActionButtons'}>
+				<DialogActionButtons
 					buttonContent={'Hello'}
 					buttonOptions={{color: 'primary', variant: 'contained'}}
 					title={'Would like to have supper?'}
 					actions={[{name: 'Okay', onClick: () => console.log('Clicked Okay')}]}
 				/>
 			</DemoSection>
-			<DemoSection title={'DialogToConfirm'}>
-				<DialogToConfirm
+			<DemoSection title={'DialogConfirmButton'}>
+				<DialogConfirmButton
 					buttonText={'Go Through'}
 					buttonProps={{color: 'primary', variant: 'contained'}}
 					onConfirm={() => console.log('confirmed')}

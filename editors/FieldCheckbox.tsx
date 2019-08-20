@@ -4,7 +4,7 @@ import React from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import {ICheckboxFieldProps} from '../SimpleEntityEditor/props'; //, {CheckboxProps}
+import {ICheckboxFieldProps} from './props'; //, {CheckboxProps}
 
 interface IProps extends ICheckboxFieldProps {
 	label: string;

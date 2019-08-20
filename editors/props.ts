@@ -1,8 +1,8 @@
 'use strict';
 
 import * as React from 'react';
-import {_CommonFields} from './commons';
 import {FilledInputProps} from '@material-ui/core/FilledInput';
+import {_CommonFields} from './commons';
 
 /* Interfaces and types defined here are expected to be exported individually and separately. */
 

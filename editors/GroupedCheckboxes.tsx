@@ -7,7 +7,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
-import {IMultipleSelectorFieldProps} from '../SimpleEntityEditor/props';
+import {IMultipleSelectorFieldProps} from './props';
 
 // import {ISharedFieldProps} from 'src/EntityEditorExample/components/SimpleEntityEditor/SimpleEntityEditor';
 
