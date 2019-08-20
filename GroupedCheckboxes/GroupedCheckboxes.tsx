@@ -77,7 +77,7 @@ export class GroupedCheckboxes extends React.PureComponent<IProps> {
 		const _value = values.map(item => item.value).filter(item => selected[item]);
 		if (minimum && _value.length < minimum) {return alert(minimumErrorText);}
 		if (maximum && _value.length > maximum) {return alert(maximumErrorText);}
-		onChange({target: {id: id, value: _value}} as any as React.ChangeEvent);
+		onChange({target: {id: id, value: _value}} as any as React.ChangeEvent<HTMLInputElement>);
 	};
 
 	render() {

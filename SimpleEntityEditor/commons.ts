@@ -1,5 +1,7 @@
 'use strict';
 
+import * as React from 'react';
+
 /* Interfaces and types defined here are expected to be exported silently. */
 
 // The shared interfaces used by props and definitions.
@@ -20,14 +22,17 @@ export namespace _CommonFields {
 	export type IFieldMargin = 'dense'
 	export type IFieldAutoComplete = 'off'
 	export type IFieldGroupFlexDirection = 'row' | 'column';
+	export type IFieldVariant = 'standard' | 'outlined' | 'filled';
 
 	// As an field of a group of fields(an entity), which works for custom components/wrappers overriding the given components by #mui, like #AdvancedTextField, #TextFieldWithSuggestions, #Selectors, #GroupedCheckboxes, #GroupedRadios, and etc.
 	export interface IFieldProps {
 		id: string;
 		label: string;
+		variant?: IFieldVariant;
 		// type?: IFieldType;
 		placeholder?: string;
 		multiline?: boolean;
+		style?: React.CSSProperties;
 
 		fullWidth?: boolean;
 		margin?: IFieldMargin;
@@ -49,6 +54,7 @@ export namespace _CommonFields {
 
 	export interface IText {
 		type: IFieldTypeText;
+		noDefaultHelperText?: boolean;
 	}
 
 	export interface ISwitch {

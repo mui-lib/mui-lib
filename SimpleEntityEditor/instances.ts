@@ -11,7 +11,7 @@ export const FieldTypePassword: _CommonFields.IFieldTypeText = 'password';
 export const FieldTypeSwitch: _CommonFields.IFieldTypeSwitch = 'switch';
 export const FieldTypeCheckbox: _CommonFields.IFieldTypeCheckbox = 'checkbox';
 export const FieldTypeRadio: _CommonFields.IFieldTypeSingleSelector = 'radio';
-export const FieldTypeSelector: _CommonFields.IFieldTypeSingleSelector = 'selector';
+export const FieldTypeSingleSelector: _CommonFields.IFieldTypeSingleSelector = 'selector';
 export const FieldTypeGroupedCheckboxes: _CommonFields.IFieldTypeMultipleSelector = 'checkboxes';
 export const FieldTypeTextWithSuggestions: _CommonFields.IFieldTypeTextWithSuggestions = 'suggestions';
 
@@ -21,3 +21,6 @@ export const FieldAutoCompleteOff: _CommonFields.IFieldAutoComplete = 'off';
 
 export const FieldGroupFlexDirectionRow: _CommonFields.IFieldGroupFlexDirection = 'row';
 export const FieldGroupFlexDirectionColumn: _CommonFields.IFieldGroupFlexDirection = 'column';
+
+
+export const FieldVariantOutlined: _CommonFields.IFieldVariant = 'outlined';

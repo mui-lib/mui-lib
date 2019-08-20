@@ -6,6 +6,7 @@ import TextField, {StandardTextFieldProps} from '@material-ui/core/TextField';
 
 // export interface IProps1 extends IRawProps, StandardTextFieldProps {}
 export interface IRawProps extends StandardTextFieldProps {
+	variant?: any;
 	// Pass a different _session_id here to reset the state of the #edited status.
 	_session_id?: string | number,
 	label: React.ReactNode;
@@ -13,6 +14,8 @@ export interface IRawProps extends StandardTextFieldProps {
 	showHelperTextWhenNotFocusing?: boolean;
 	// Whether to show the error text when focusing.
 	showErrorTextWhenFocusing?: boolean,
+	// By default a blank string ' ' is used for the helper text to fix the height of the #TextField.
+	noDefaultHelperText?: boolean;
 	errorText?: string;
 }
 
@@ -82,7 +85,7 @@ export class AdvancedTextField extends React.PureComponent<IRawProps> {
 
 	render() {
 		const {isFocusing, isEdited} = this.state;
-		const {showHelperTextWhenNotFocusing, showErrorTextWhenFocusing, helperText, errorText, InputProps, onFocus, onBlur, ...others} = this.props;
+		const {showHelperTextWhenNotFocusing, showErrorTextWhenFocusing, noDefaultHelperText, helperText, errorText, InputProps, onFocus, onBlur, ...others} = this.props;
 		// Save the passed listeners in local.
 		if (onFocus) {this.otherOnFocus = onFocus;}
 		if (onBlur) {this.otherOnBlur = onBlur;}
@@ -107,7 +110,7 @@ export class AdvancedTextField extends React.PureComponent<IRawProps> {
 				onBlur={this.onBlur}
 				onFocus={this.onFocus}
 				// Use a space to make the height of the TextField fixed.
-				helperText={realHelperText || ' '}
+				helperText={realHelperText || (noDefaultHelperText ? '' : ' ')}
 				{...others}
 			/>
 		);

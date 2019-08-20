@@ -17,7 +17,7 @@ export interface IEntityFieldWrapper extends _CommonFields.IFieldProps {
 	onFocus?: React.EventHandler<any>;
 	InputProps?: Partial<FilledInputProps>;
 
-	onChange: (event: React.ChangeEvent) => void;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => any;
 }
 
 export interface IInputFieldProps extends IEntityFieldWrapper, _CommonFields.IText {

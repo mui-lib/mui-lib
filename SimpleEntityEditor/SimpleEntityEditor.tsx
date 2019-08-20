@@ -3,7 +3,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import {FieldTypeCheckbox, FieldTypeSwitch} from './instances';
-import {IEnvironment, IFieldDefinition} from './definitions';
+import {IEnvironment, IFieldDefinition, IFieldDefinitionWithNode} from './definitions';
 
 // import {FilledTextFieldProps, OutlinedTextFieldProps, StandardTextFieldProps} from '@material-ui/core/TextField/TextField';
 
@@ -21,7 +21,7 @@ export interface IProps {
 	onPatchChange: (patch: any) => any;
 	onFieldsRendered?: (env: IEnvironment) => any;
 	// Fields of the entity that to be handled.
-	entityFields: IFieldDefinition[],
+	entityFields: IFieldDefinitionWithNode[],
 	// - The component used for unspecified fields.
 	// - The default component used when other components is not correctly loaded.
 	TextField: React.ReactNode,
@@ -166,6 +166,6 @@ export class SimpleEntityEditor extends React.Component<IProps> {
 			errorTexts: [],
 		};
 		onFieldsRendered && onFieldsRendered(env);
-		return entityFields.map((field: IFieldDefinition) => this.renderField(field, updatedEntity[field.id], env, _session_id));
+		return entityFields.map((field: IFieldDefinition | React.ReactNode) => field && typeof field === 'object' && 'id' in field ? this.renderField(field, updatedEntity[field.id], env, _session_id) : field);
 	}
 }

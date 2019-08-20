@@ -3,7 +3,7 @@
 
 import React from 'react';
 import {IUpsertDialogDefinition} from '../dialogs/definitions';
-import {IEnvironment, IFieldDefinition} from '../SimpleEntityEditor/definitions';
+import {IEnvironment, IFieldDefinitionWithNode} from '../SimpleEntityEditor/definitions';
 import {IDialogEntityEditorProps} from './IDialogEntityEditor';
 
 // Whether a patch is valid to be committed.
@@ -20,7 +20,7 @@ export interface IEditorUpsertEntityProps<T extends object, P extends object, K 
 	getUnifiedEntity: (entity: T) => T;
 	isResolvedEntityValid: (entity: T) => boolean;
 
-	fields: IFieldDefinition[];
+	fields: IFieldDefinitionWithNode[];
 }
 
 // Deconstruct from the real props to avoid conflict.

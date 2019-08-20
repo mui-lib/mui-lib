@@ -1,5 +1,6 @@
 'use strict';
 
+import * as React from 'react';
 import {_CommonFields} from './commons';
 
 /* Interfaces and types defined here are expected to be exported individually and separately. */
@@ -56,3 +57,4 @@ export interface ISuggestionFieldDefinition extends IBaseFieldDefinition, _Commo
 }
 
 export type IFieldDefinition = IInputFieldDefinition | ISwitchFieldDefinition | ICheckboxFieldDefinition | IMultipleSelectorFieldDefinition | ISingleSelectorFieldDefinition | ISuggestionFieldDefinition
+export type IFieldDefinitionWithNode = IFieldDefinition | React.ReactNode

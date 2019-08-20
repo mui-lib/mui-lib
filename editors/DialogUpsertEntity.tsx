@@ -12,6 +12,7 @@ import {FieldSwitch} from '../FieldSwitch/FieldSwitch';
 import {GroupedCheckboxes} from '../GroupedCheckboxes/GroupedCheckboxes';
 import {SimpleEntityEditor} from '../SimpleEntityEditor/SimpleEntityEditor';
 import {DialogUpsertEntityTitleBar} from './DialogUpsertEntityTitleBar';
+import {FieldSingleSelector} from './FieldSingleSelector';
 import {IEditorUpsertEntityProps, useUpsertEntity} from './useUpsertEntity';
 
 // FIX-ME Fix the so much more props and provide a flexible visual interactions.
@@ -48,9 +49,8 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 					Checkbox={FieldCheckbox}
 					Switch={FieldSwitch}
 					GroupedCheckboxes={GroupedCheckboxes}
+					Selector={FieldSingleSelector}
 				/>
-				<br/>
-				<br/>
 			</DialogContent>
 			<DialogActions>
 				{isCreating || !onDeleteEntity || !labelDeleteButton ? undefined : <Button variant='contained' color='primary' disabled={isPatchReady} onClick={onDeleteEntity}>{labelDeleteButton}</Button>}
