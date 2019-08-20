@@ -2,8 +2,8 @@
 
 
 import React from 'react';
-import {IUpsertDialogDefinition} from '../dialogs/definitions';
-import {IEnvironment, IFieldDefinitionWithNode} from './definitions';
+import {IEnvironment, IFieldDefinitionWithNode} from '../editors/definitions';
+import {IUpsertDialogDefinition} from './definitions';
 import {IDialogEntityEditorProps} from './IDialogEntityEditor';
 
 // Whether a patch is valid to be committed.

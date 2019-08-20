@@ -5,8 +5,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import IconClose from '@material-ui/icons/Close';
-import {MuiDialogTitleBar} from '../layouts/MuiDialogTitleBar';
-import {MuiAppBar} from '../layouts/MuiAppBar';
+import {MuiDialogTitleBar} from './MuiDialogTitleBar';
+import {MuiAppBar} from './MuiAppBar';
 
 interface IProps {
 	fullScreen?: boolean;

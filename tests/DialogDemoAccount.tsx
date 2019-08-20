@@ -2,8 +2,8 @@
 
 import React from 'react';
 import {Button} from '@material-ui/core';
-import {getDialogUpsertEntity} from '../editors/DialogUpsertEntity';
-import {IDialogEntityEditorProps} from '../editors/IDialogEntityEditor';
+import {getDialogUpsertEntity} from '../dialogs/DialogUpsertEntity';
+import {IDialogEntityEditorProps} from '../dialogs/IDialogEntityEditor';
 import {AccountExcel} from './AccountExcel';
 import {AccountUtil, IAccount, IAccountBody, IAccountPatch} from './typed-accounts';
 import {fields as _fields, RAccount} from './resources';
