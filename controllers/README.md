@@ -6,5 +6,6 @@ The components as small widgets that interact with users to control the visual/l
 
 ## Components
 
+- Grouped (Text )Buttons
 - Grouped Icon Buttons
 	- GroupedViewModes
