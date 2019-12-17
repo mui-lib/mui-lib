@@ -6,14 +6,14 @@ import {useStyles} from './ViewLabelsAndValues.styles';
 
 // [ label, value, flexLabel, flexValue ]
 export type ISingleLabelValue = [string | any, any, number?, number?]
-export type IRowLabelValue = ISingleLabelValue[]
+export type IRowLabelValue = ISingleLabelValue | ISingleLabelValue[]
 
 interface IProps {
-	// Normal( Text Mode(minWidth=120) | Border-less Table) | Table(Bordered Table)
+	// TO-DO Support multiple modes:
+	// [ A. Text Mode(minWidth=120) | B. Border-less Table | C. Table(Bordered Table) ]
 	mode: string;
 	// In the mode.
-	data: ISingleLabelValue[];
-	dataset?: IRowLabelValue[];
+	dataset: IRowLabelValue[];
 
 	// Style for the overall table.
 	style?: object;
@@ -29,24 +29,14 @@ interface IProps {
 
 // A view component exhibit #Labels and corresponding #Values.
 // Like [#Descriptions](https://ant.design/components/descriptions) in Ant Design.
+// This like exactly the table view of keys and values, and hence may be named as #TableOfKeysAndValues.
 export const ViewLabelsAndValues = React.memo<IProps>((
 	{
-		data, dataset, style, separator,
+		dataset, style, separator,
 		padding = 8, flexLabel = 1, flexValue = 2, styleLabel, styleValue,
 	},
 ) => {
 	const cls = useStyles();
-
-	const renderSimpleRow = (index: number, [label, value]: ISingleLabelValue) => (
-		<div className={clsx(cls.ctnTableRow, {[cls.ctnTableRowsFollowed]: index !== 0})} key={index}>
-			<div className={cls.ctnTableLabel} style={{flex: flexLabel, ...styleLabel}}>
-				<div className={cls.ctnTableLabelDiv} style={{padding}}>{label}{separator}</div>
-			</div>
-			<div className={cls.ctnTableValue} style={{flex: flexValue, ...styleValue}}>
-				<div className={cls.ctnTableValueDiv} style={{padding}}>{value}</div>
-			</div>
-		</div>
-	);
 
 	const renderComplexRow = (index: number, bundles: ISingleLabelValue[]) => (
 		<div className={clsx(cls.ctnTableRow, {[cls.ctnTableRowsFollowed]: index !== 0})} key={index}>
@@ -63,13 +53,9 @@ export const ViewLabelsAndValues = React.memo<IProps>((
 		</div>
 	);
 
-	return dataset ? (
+	return (
 		<div className={cls.ctnTableRoot} style={style}>
-			{dataset.map((row, index) => renderComplexRow(index, row))}
-		</div>
-	) : (
-		<div className={cls.ctnTableRoot} style={style}>
-			{data.map((row, index) => renderSimpleRow(index, row))}
+			{dataset.map((row, index) => renderComplexRow(index, Array.isArray(row[0]) ? row : [row] as ISingleLabelValue[]))}
 		</div>
 	);
 });
