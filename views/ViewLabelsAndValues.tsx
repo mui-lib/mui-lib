@@ -39,11 +39,11 @@ export const ViewLabelsAndValues = React.memo<IProps>((
 
 	const renderSimpleRow = (index: number, [label, value]: ISingleLabelValue) => (
 		<div className={clsx(cls.ctnTableRow, {[cls.ctnTableRowsFollowed]: index !== 0})} key={index}>
-			<div className={cls.ctnTableLabel} style={{padding, flex: flexLabel, ...styleLabel}}>
-				<span>{label}{separator}</span>
+			<div className={cls.ctnTableLabel} style={{flex: flexLabel, ...styleLabel}}>
+				<div className={cls.ctnTableLabelDiv} style={{padding}}>{label}{separator}</div>
 			</div>
-			<div className={cls.ctnTableValue} style={{padding, flex: flexValue, ...styleValue}}>
-				<span>{value}</span>
+			<div className={cls.ctnTableValue} style={{flex: flexValue, ...styleValue}}>
+				<div className={cls.ctnTableValueDiv} style={{padding}}>{value}</div>
 			</div>
 		</div>
 	);
@@ -52,11 +52,11 @@ export const ViewLabelsAndValues = React.memo<IProps>((
 		<div className={clsx(cls.ctnTableRow, {[cls.ctnTableRowsFollowed]: index !== 0})} key={index}>
 			{bundles.map(([label, value, fLabel, fValue], index) => (
 				<div key={index} className={cls.ctnCellLabelValue}>
-					<div className={cls.ctnTableLabel} style={{padding, flex: fLabel || flexLabel, ...styleLabel}}>
-						<span>{label}{separator}</span>
+					<div className={cls.ctnTableLabel} style={{flex: fLabel || flexLabel, ...styleLabel}}>
+						<div className={cls.ctnTableLabelDiv} style={{padding}}>{label}{separator}</div>
 					</div>
-					<div className={cls.ctnTableValue} style={{padding, flex: fValue || flexValue, ...styleValue}}>
-						<span>{value}</span>
+					<div className={cls.ctnTableValue} style={{flex: fValue || flexValue, ...styleValue}}>
+						<div className={cls.ctnTableValueDiv} style={{padding}}>{value}</div>
 					</div>
 				</div>
 			))}

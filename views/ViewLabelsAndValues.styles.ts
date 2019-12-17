@@ -16,14 +16,17 @@ export const useStyles = makeStyles({
 	ctnTableLabel: {
 		color: '#000000d9', background: '#eee',
 		// The default padding and flex.
-		padding: '8px', flex: 1,
+		flex: 1,
 		display: 'flex', justifyContent: 'flex-end', alignItems: 'center',
 	},
+	// The default padding for label and value.
+	ctnTableLabelDiv: {padding: '8px'},
+	ctnTableValueDiv: {padding: '8px'},
 	//{display: 'inline-block', minWidth: '120px', color: '#000000d9'},
 	ctnTableValue: {
 		color: '#000000a6',
 		// The default padding and flex.
-		padding: '8px', flex: 2,
+		flex: 2,
 		overflowWrap: 'break-word',
 		// Forcefully break words inside the flex div.
 		// On the way being professional at CSSSS :) :) :) ;).
