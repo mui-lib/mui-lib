@@ -12,6 +12,7 @@ export const useStyles = makeStyles({
 	ctnTableRoot: {display: 'flex', flexFlow: 'column', border: '1px solid #ccc'},
 	ctnTableRow: {display: 'flex'},
 	ctnTableRowsFollowed: {borderTop: '1px solid #ddd'},
+	ctnCellLabelValue: {display: 'flex', width: '100%'},
 	ctnTableLabel: {
 		color: '#000000d9', background: '#eee',
 		// The default padding and flex.
