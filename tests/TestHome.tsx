@@ -6,7 +6,7 @@ import {FieldCheckbox} from '../editors/FieldCheckbox';
 import {FieldSwitch} from '../editors/FieldSwitch';
 import {SimpleEntityEditor} from '../editors/SimpleEntityEditor';
 import {SimpleFieldEditor} from '../editors/SimpleFieldEditor';
-import {CountdownBySeconds} from '../CountdownBySeconds/CountdownBySeconds';
+import {CountdownBySeconds} from '../widgets/CountdownBySeconds';
 import {DialogActionButtons} from '../dialogs/DialogActionButtons';
 import {DialogConfirmButton} from '../dialogs/DialogConfirmButton';
 import {DialogDemoAccount} from './DialogDemoAccount';

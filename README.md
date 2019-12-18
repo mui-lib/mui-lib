@@ -26,7 +26,7 @@ A library of more complicated components for [material-ui](https://github.com/mu
 	- arePropsPureValuesEqual(prevProps, nextProps): `boolean`
 - Layouts
 	- Mui App Bar
-- Standalone
+- Widgets
 	- Countdown By Seconds
 
 ## Editors
@@ -232,7 +232,7 @@ Hence the solutions could be more generalized and open.
 	- domLeft?: `React Dom`
 	- domRight?: `React Dom`
 
-## Standalone
+## Widgets
 
 - Countdown By Seconds
 	- Seconds: `number`
