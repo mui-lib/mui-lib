@@ -27,15 +27,19 @@ type IPadding = Padding
 
 type IReactNode = React.ReactNode
 
+type IRenderer = (entry: any, value: any, index: number) => IReactNode
+
 export interface ITableColumn {
 	header: IReactNode;
 	key: string;
 	align?: IAlign;
 	padding?: IPadding;
 	default?: IReactNode;
+	render?: IRenderer;
 }
 
-export const newTableColumn = (key: string, header: IReactNode, align?: IAlign, defaultValue?: IReactNode, padding?: IPadding): ITableColumn => ({key, header, align, padding, default: defaultValue});
+export const newTableColumn = (key: string, header: IReactNode, align?: IAlign, defaultValue?: IReactNode, padding?: IPadding, render?: IRenderer): ITableColumn =>
+	({key, header, align, padding, default: defaultValue, render});
 
 export const KeyFieldIndex = '$index';
 
@@ -73,7 +77,11 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 			</TableCell>
 			{columns.map((column) => (
 				<TableCell key={column.key} align={column.align} padding={column.padding}>
-					{column.key === KeyFieldIndex ? index + 1 : entry[column.key] || column.default || ''}
+					{column.render ? (
+						column.render(entry, entry[column.key], index)
+					) : (
+						column.key === KeyFieldIndex ? index + 1 : entry[column.key] || column.default || ''
+					)}
 				</TableCell>
 			))}
 		</TableRow>
