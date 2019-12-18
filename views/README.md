@@ -6,4 +6,5 @@ The collection of several viewable components for data display.
 
 ## Components
 
+- ViewBadgeDotTextStatus
 - ViewLabelsAndValues
