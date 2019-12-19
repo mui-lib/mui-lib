@@ -11,7 +11,11 @@ import Radio from '@material-ui/core/Radio';
 import {TableFetcherPlaceholder} from './TableFetcherPlaceholder';
 
 const useStyles = makeStyles({
+	ctnTable: {position: 'relative'},
+	// The border should share a same radius with the table root.
+	ctnBorder: {position: 'absolute', top: '0', bottom: '0', right: '0', left: '0', border: '1px solid #ddd', borderRadius: '6px 6px 0 0', pointerEvents: 'none'},
 	root: {minWidth: 650, borderRadius: '6px', background: '#eee'},
+	row: {cursor: 'pointer', '&:hover': {background: '#e6e6e6'}},
 	rowEven: {background: '#fafafa'},
 	rowOdd: {background: '#f5f5f5'},
 });
@@ -45,6 +49,12 @@ export const nextTableColumn = (key: string, header: IReactNode, render?: IRende
 
 export const KeyFieldIndex = '$index';
 
+interface ITableBorder {
+	no?: boolean;
+	border?: string;
+	radius?: string;
+}
+
 interface IProps<T extends ID> {
 	entries?: T[];
 	columns: ITableColumn[];
@@ -63,6 +73,9 @@ interface IProps<T extends ID> {
 	defaultValue?: IReactNode,
 	padding?: IPadding
 	size?: Size;
+	// x ~~Give a empty border to enable the table border.~~
+	// √ Give a empty border to disable the default table border.
+	border?: ITableBorder;
 }
 
 
@@ -74,11 +87,12 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 		keyEntryId, selectedEntryId, onSelectEntry,
 		size, //labels, values,
 		align, defaultValue = '', padding,
+		border,
 	} = props;
 	const filtered = entries ? entries.filter(entry => Boolean(entry[keyEntryId])) : undefined;
 
 	const renderRows = (entry: T, index: number) => (
-		<TableRow key={entry[keyEntryId]} className={index % 2 === 0 ? cls.rowEven : cls.rowOdd} onClick={() => onSelectEntry(entry[keyEntryId], entry)}>
+		<TableRow key={entry[keyEntryId]} className={cls.row + ' ' + (index % 2 === 0 ? cls.rowEven : cls.rowOdd)} onClick={() => onSelectEntry(entry[keyEntryId], entry)}>
 			<TableCell align="center" padding='checkbox'>
 				<Radio checked={selectedEntryId === entry[keyEntryId]}/>
 			</TableCell>
@@ -94,7 +108,7 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 		</TableRow>
 	);
 
-	return (
+	const renderTable = () => (
 		// @see https://material-ui.com/components/tables/
 		<Table className={cls.root} size={size}>
 			<TableHead>
@@ -112,6 +126,20 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 			</TableBody>
 		</Table>
 	);
+	// Disable the default border explicitly.
+	if (border && border.no) {return renderTable();}
+	// Give a empty border to disable the default table border.
+	if (border && !border.border && !border.radius) {return renderTable();}
+	return (
+		<div className={cls.ctnTable}>
+			{renderTable()}
+			<div className={cls.ctnBorder} style={border ? {
+				...(border.border ? {border: border.border} : undefined),
+				...(border.radius ? {borderRadius: border.radius} : undefined),
+			} : undefined}/>
+		</div>
+	);
+
 });
 
 export const getViewSelectableTable = <T extends ID>(): React.FC<IProps<T>> => TableSelectableRows;
