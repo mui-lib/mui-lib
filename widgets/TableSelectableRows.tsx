@@ -40,6 +40,8 @@ export interface ITableColumn {
 
 export const newTableColumn = (key: string, header: IReactNode, align?: IAlign, defaultValue?: IReactNode, padding?: IPadding, render?: IRenderer): ITableColumn =>
 	({key, header, align, padding, default: defaultValue, render});
+export const nextTableColumn = (key: string, header: IReactNode, render?: IRenderer): ITableColumn =>
+	({key, header, render});
 
 export const KeyFieldIndex = '$index';
 
@@ -54,8 +56,12 @@ interface IProps<T extends ID> {
 	placeholder: string;//React.ReactNode;
 	// labels: IField[];
 	// values: IField[][];
-	onSelectEntry: (id: number, entry: T) => any;
+	onSelectEntry: (id: string | number, entry: T) => any;
 
+	// Table Configures/Options
+	align?: IAlign,
+	defaultValue?: IReactNode,
+	padding?: IPadding
 	size?: Size;
 }
 
@@ -67,6 +73,7 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 		entries, columns, placeholder,
 		keyEntryId, selectedEntryId, onSelectEntry,
 		size, //labels, values,
+		align, defaultValue = '', padding,
 	} = props;
 	const filtered = entries ? entries.filter(entry => Boolean(entry[keyEntryId])) : undefined;
 
@@ -76,11 +83,11 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 				<Radio checked={selectedEntryId === entry[keyEntryId]}/>
 			</TableCell>
 			{columns.map((column) => (
-				<TableCell key={column.key} align={column.align} padding={column.padding}>
+				<TableCell key={column.key} align={column.align || align} padding={column.padding || padding}>
 					{column.render ? (
 						column.render(entry, entry[column.key], index)
 					) : (
-						column.key === KeyFieldIndex ? index + 1 : entry[column.key] || column.default || ''
+						column.key === KeyFieldIndex ? index + 1 : entry[column.key] || column.default || defaultValue || ''
 					)}
 				</TableCell>
 			))}
@@ -94,7 +101,7 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 				<TableRow>
 					<TableCell align="center" padding='checkbox'> </TableCell>
 					{columns.map((column, index) => (
-						<TableCell key={index} align={column.align} padding={column.padding}>{column.header}</TableCell>
+						<TableCell key={index} align={column.align || align} padding={column.padding || padding}>{column.header}</TableCell>
 					))}
 				</TableRow>
 			</TableHead>
