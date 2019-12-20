@@ -16,6 +16,7 @@ interface IProps {
 	dataset: IRowLabelValue[];
 
 	// Style for the overall table.
+	className?: string;
 	style?: object;
 	separator?: string;
 
@@ -32,7 +33,7 @@ interface IProps {
 // This like exactly the table view of keys and values, and hence may be named as #TableOfKeysAndValues.
 export const ViewLabelsAndValues = React.memo<IProps>((
 	{
-		dataset, style, separator,
+		dataset, className, style, separator,
 		padding = 8, flexLabel = 1, flexValue = 2, styleLabel, styleValue,
 	},
 ) => {
@@ -54,7 +55,7 @@ export const ViewLabelsAndValues = React.memo<IProps>((
 	);
 
 	return (
-		<div className={cls.ctnTableRoot} style={style}>
+		<div className={className ? [cls.ctnTableRoot, className].join(' ') : cls.ctnTableRoot} style={style}>
 			{dataset.map((row, index) => renderComplexRow(index, Array.isArray(row[0]) ? row : [row] as ISingleLabelValue[]))}
 		</div>
 	);
