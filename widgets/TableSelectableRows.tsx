@@ -70,6 +70,9 @@ interface IProps<T extends ID> {
 	// The default values of the a target field.
 	// defaults: React.ReactNode[];
 	keyEntryId: string;
+	// Is the row selectable?
+	// FIX-ME By default, is selectable?
+	notSelectable?: boolean;
 	selectedEntryId?: string;
 	placeholder: string;//React.ReactNode;
 	// labels: IField[];
@@ -92,7 +95,7 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 	const cls = useStyles();
 	const {
 		entries, columns, placeholder,
-		keyEntryId, selectedEntryId, onSelectEntry,
+		keyEntryId, notSelectable, selectedEntryId, onSelectEntry,
 		size, //labels, values,
 		align, defaultValue = '', padding,
 		border,
@@ -101,9 +104,11 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 
 	const renderRows = (entry: T, index: number) => (
 		<TableRow key={entry[keyEntryId]} className={cls.row + ' ' + (index % 2 === 0 ? cls.rowEven : cls.rowOdd)} onClick={() => onSelectEntry(entry[keyEntryId], entry)}>
-			<TableCell align="center" padding='checkbox'>
-				<Radio checked={selectedEntryId === entry[keyEntryId]}/>
-			</TableCell>
+			{notSelectable ? undefined : (
+				<TableCell align="center" padding='checkbox'>
+					<Radio checked={selectedEntryId === entry[keyEntryId]}/>
+				</TableCell>
+			)}
 			{columns.map((column) => (
 				<TableCell key={column.key} align={column.align || align} padding={column.padding || padding}>
 					{column.render ? (
@@ -121,7 +126,9 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 		<Table className={cls.root} size={size}>
 			<TableHead>
 				<TableRow>
-					<TableCell align="center" padding='checkbox'> </TableCell>
+					{notSelectable ? undefined : (
+						<TableCell align="center" padding='checkbox'> </TableCell>
+					)}
 					{columns.map((column, index) => (
 						<TableCell
 							key={index} align={column.align || align} padding={column.padding || padding}
