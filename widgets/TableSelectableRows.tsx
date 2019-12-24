@@ -25,6 +25,9 @@ interface ID {
 }
 
 type IAlign = 'inherit' | 'left' | 'center' | 'right' | 'justify';
+export const IAlignLeft: IAlign = 'left';
+export const IAlignCenter: IAlign = 'center';
+export const IAlignRight: IAlign = 'right';
 type IPadding = Padding
 
 // type IField = React.ReactNode | [React.ReactNode, IAlign, Padding];
@@ -33,17 +36,22 @@ type IReactNode = React.ReactNode
 
 type IRenderer = (entry: any, value: any, index: number) => IReactNode
 
-export interface ITableColumn {
-	header: IReactNode;
-	key: string;
+export interface ITableColumnOptions {
 	align?: IAlign;
 	padding?: IPadding;
 	default?: IReactNode;
+	width?: string | number;
+	style?: object;
+}
+
+export interface ITableColumn extends ITableColumnOptions {
+	header: IReactNode;
+	key: string;
 	render?: IRenderer;
 }
 
-export const newTableColumn = (key: string, header: IReactNode, align?: IAlign, defaultValue?: IReactNode, padding?: IPadding, render?: IRenderer): ITableColumn =>
-	({key, header, align, padding, default: defaultValue, render});
+export const newTableColumn = (key: string, header: IReactNode, options?: ITableColumnOptions, render?: IRenderer): ITableColumn =>
+	({...options, key, header, render});
 export const nextTableColumn = (key: string, header: IReactNode, render?: IRenderer): ITableColumn =>
 	({key, header, render});
 
@@ -115,7 +123,12 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 				<TableRow>
 					<TableCell align="center" padding='checkbox'> </TableCell>
 					{columns.map((column, index) => (
-						<TableCell key={index} align={column.align || align} padding={column.padding || padding}>{column.header}</TableCell>
+						<TableCell
+							key={index} align={column.align || align} padding={column.padding || padding}
+							style={column.style || (column.width ? {width: column.width} : undefined)}
+						>
+							{column.header}
+						</TableCell>
 					))}
 				</TableRow>
 			</TableHead>
