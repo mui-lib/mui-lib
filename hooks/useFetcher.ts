@@ -37,36 +37,37 @@ export const $setPlaceholderStrings = ({initial, initializing, refreshing, empty
 //     B. Timeout
 //     C. Network
 //     D. Not Found
-export interface IFetcher {
+export interface IFetcher<T, E = Error> {
 	loading: boolean;
 	initializing: boolean;
-	data?: any;
-	error?: any;
+	data?: T;
+	error?: E;
 	message: string;
 }
 
-const initial: IFetcher = {
+const initial: IFetcher<any, any> = {
 	loading: false, // The loading state, can be animated with a progress indicator if true.
 	initializing: true, // The initial request, if is loading and true.
 	data: undefined, // The requested and cached data.
 	error: undefined, // The requested and cached exception.
 	message: phd.initial, // The description of the fetcher, may be used as the simplified placeholder.
 };
-const initializing: IFetcher = {
+const initializing: IFetcher<any, any> = {
 	...initial,
 	loading: true,
 	message: phd.initializing,
 };
 
-type funcFetched = (data?: any, error?: any) => any
+type funcFetched<T, E = Error> = (data?: T, error?: E) => any
 type funcRefreshing = Function;
 
 // The fetching status of an async fetcher.
-export const useFetcher = (notFetching?: boolean): [IFetcher, funcFetched, funcRefreshing] => {
+// @see https://github.com/zhanbei/uzbei.com/issues/2
+export const useFetcher = <T, E = Error>(notFetching?: boolean): [IFetcher<T, E>, funcFetched<T, E>, funcRefreshing] => {
 	// Load immediately with following refreshes, by default.
 	const [fetcher, setFetcher] = React.useState(notFetching ? initial : initializing);
 	// const error = (error: any) => setStatus({...fetcher, loading: false, data: undefined, error});
-	const fetched = (data: any, error: any) => setFetcher({loading: false, initializing: false, data, error, message: error ? phd.failed : (data ? phd.succeeded : phd.empty)});
+	const fetched = (data?: T, error?: E) => setFetcher({loading: false, initializing: false, data, error, message: error ? phd.failed : (data ? phd.succeeded : phd.empty)});
 	// First call of refreshing will set the status to initializing.
 	const refreshing = () => setFetcher({
 		loading: true, data: undefined, error: undefined,
