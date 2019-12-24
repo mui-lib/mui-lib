@@ -140,7 +140,10 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 				</TableRow>
 			</TableHead>
 			<TableBody>
-				{filtered ? filtered.map(renderRows) : (
+				{filtered && filtered.length > 0 ? filtered.map(renderRows) : (
+					// FIX-ME Set an explicit placeholder as fallback for the case that filtered existed as [].
+					// FIX-ME Set styles for the placeholder or use a custom placeholder.
+					// Configure the *global(project-scope)* placeholder for all tables.
 					<TableFetcherPlaceholder message={placeholder} size='mini'/>
 				)}
 			</TableBody>
