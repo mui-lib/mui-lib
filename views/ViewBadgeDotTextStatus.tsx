@@ -5,10 +5,11 @@ import {makeStyles} from '@material-ui/core/styles';
 
 const size = 6;
 const useStyles = makeStyles({
+	ctn: {display: 'inline-flex', alignItems: 'center', justifyContent: 'center'},
 	dot: {width: size, height: size, margin: '0 5px', borderRadius: '50%'},
 });
 
-export type IStatus = 'success' | 'warning' | 'processing' | 'error'
+export type IStatus = 'success' | 'warning' | 'error' | 'default' | 'processing'
 
 interface IProps {
 	status?: IStatus;
@@ -26,6 +27,7 @@ const getColor = (status?: IStatus): string => {
 			return 'orange';
 		case 'error':
 			return '#c00';
+		case 'default':
 		default:
 			return status || 'gray';
 	}
@@ -39,7 +41,7 @@ export const ViewBadgeDotTextStatus = React.memo<IProps>(({status, color, text})
 	if (!color) {color = getColor(status);}
 
 	return text ? (
-		<div style={{color, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+		<div className={cls.ctn} style={{color}}>
 			<div className={cls.dot} style={{background: color}}/>
 			{text}
 		</div>
