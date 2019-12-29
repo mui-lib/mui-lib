@@ -9,7 +9,7 @@ interface IContextLanguageValue {
 }
 
 export const DEFAULT_LANGUAGE_CONTEXT_VALUE: IContextLanguageValue = {
-	language: navigator.language || UN_LANGUAGES.ENGLISH,
+	language: navigator.language || UN_LANGUAGES.en,
 	languages: navigator.languages,
 };
 
