@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 
-type GetUpsertString = (isCreating: boolean) => string
+export type GetUpsertString = (isCreating: boolean) => string
 
 interface IBaseConfigure {
 	fullScreen?: boolean;
