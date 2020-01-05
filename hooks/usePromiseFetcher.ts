@@ -15,7 +15,8 @@ interface IFetcherRefer {
 // FIX-ME Added delay, but the fetcher should be reset when the depends changed.
 export const usePromiseFetcher = <T, E = Error>(doFetch: () => Promise<T>, depends: any[] = [], delay: number = 0): [IFetcher<T, E>, (noBlinking?: boolean) => any] => {
 	const ref = React.useRef(true);
-	const [fetcher, fetched, refreshing] = useFetcher<T, E>(delay !== 0);
+	// Guideline I: Do not synchronously update component state directly.
+	const [fetcher, fetched, refreshing] = useFetcher<T, E>(depends, delay !== 0);
 	// console.log('updating fetcher:', fetcher);
 	const doRefresh = (noBlinking?: boolean): IFetcherRefer => {
 		if (!noBlinking) {refreshing();}
@@ -39,6 +40,8 @@ export const usePromiseFetcher = <T, E = Error>(doFetch: () => Promise<T>, depen
 		return _ref;
 	};
 	React.useEffect(() => {
+		// Guideline II: Treat as initializing on the props changed.
+		ref.current = true;
 		// FIX-ME Cancel the request of same component with different dependencies.
 		let _ref: IFetcherRefer | undefined;
 		let timer: any;
@@ -47,14 +50,16 @@ export const usePromiseFetcher = <T, E = Error>(doFetch: () => Promise<T>, depen
 			// Should not update state again, during the initialization process of the target component.
 			// Reset of the Target Component, Requested by Dependencies
 			// Should reset the fetcher explicitly, because the current fetcher holds an incorrect cache.
-			_ref = doRefresh(ref.current && delay === 0);
+			// The process of initializing or resetting is the logically same, ignoring the mounting or unmounting of the target component.
+			_ref = doRefresh(true);
 		} else if (delay > 0) {
 			timer = setTimeout(() => {
+				// The call of refreshing() may be ignored for performance.
+				// The state changes will be: 1. Initial => XX Initializing XX => 2. Fetched
 				_ref = doRefresh();
 				timer = undefined;
 			}, delay);
 		}
-		ref.current = true;
 		return () => {
 			ref.current = false;
 			if (_ref) {_ref.active = false;}
