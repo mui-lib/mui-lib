@@ -8,9 +8,14 @@ interface IFetcherRefer {
 }
 
 // By default, will trigger the async promise directly; provide a #doRefresh API to refresh data.
-export const usePromiseFetcher = <T, E = Error>(doFetch: () => Promise<T>, depends: any[] = [], notFetching?: boolean): [IFetcher<T, E>, (noBlinking?: boolean) => any] => {
+// FIX-ME Need to support delay of requests, for frequent switches triggering multiple requests.
+// Not Yet, because the time between switches are usually around 300 milliseconds.
+// Yes, to set the delay over one second.
+// Yes, because be powerful first and optimize for end uses later.
+// FIX-ME Added delay, but the fetcher should be reset when the depends changed.
+export const usePromiseFetcher = <T, E = Error>(doFetch: () => Promise<T>, depends: any[] = [], delay: number = 0): [IFetcher<T, E>, (noBlinking?: boolean) => any] => {
 	const ref = React.useRef(true);
-	const [fetcher, fetched, refreshing] = useFetcher<T, E>(notFetching);
+	const [fetcher, fetched, refreshing] = useFetcher<T, E>(delay !== 0);
 	// console.log('updating fetcher:', fetcher);
 	const doRefresh = (noBlinking?: boolean): IFetcherRefer => {
 		if (!noBlinking) {refreshing();}
@@ -36,19 +41,24 @@ export const usePromiseFetcher = <T, E = Error>(doFetch: () => Promise<T>, depen
 	React.useEffect(() => {
 		// FIX-ME Cancel the request of same component with different dependencies.
 		let _ref: IFetcherRefer | undefined;
-		if (ref.current) {
+		let timer: any;
+		if (delay === 0) {
 			// Initialization of the Target Component
 			// Should not update state again, during the initialization process of the target component.
-			if (!notFetching) {_ref = doRefresh(true);}
-		} else {
 			// Reset of the Target Component, Requested by Dependencies
-			ref.current = true;
 			// Should reset the fetcher explicitly, because the current fetcher holds an incorrect cache.
-			_ref = doRefresh();
+			_ref = doRefresh(ref.current && delay === 0);
+		} else if (delay > 0) {
+			timer = setTimeout(() => {
+				_ref = doRefresh();
+				timer = undefined;
+			}, delay);
 		}
+		ref.current = true;
 		return () => {
 			ref.current = false;
 			if (_ref) {_ref.active = false;}
+			if (timer) {clearTimeout(timer);}
 		};
 	}, depends);
 	return [fetcher, doRefresh];
