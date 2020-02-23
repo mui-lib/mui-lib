@@ -6,6 +6,8 @@ type StateSetterAction<IState> = (state: IState) => IState
 // @see https://stackoverflow.com/questions/39713349/make-all-properties-within-a-typescript-interface-optional
 type SetStateAction<IState> = IState | Partial<IState> | StateSetterAction<IState>
 
+let random = 0;
+
 // Initialize state and reset state with specific conditions.
 // MAY BE USED TO Get the derived state from the context(props/states) depends on context(props/states).
 export const useDerivedStateFromProps = <IState>(getDerivedState: () => IState, depends?: any[], obsolete?: boolean): [IState, (state: SetStateAction<IState>) => any] => {
@@ -28,7 +30,7 @@ export const useDerivedStateFromProps = <IState>(getDerivedState: () => IState, 
 		} else {
 			ref.current = state as any as IState;
 		}
-		doForceRender(state);
+		doForceRender(random++);
 	};
 
 	return [ref.current, setState];
