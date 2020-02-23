@@ -66,7 +66,7 @@ type funcRefreshing = Function;
 export const useFetcher = <T, E = Error>(depends: any[] = [], notFetching?: boolean): [IFetcher<T, E>, funcFetched<T, E>, funcRefreshing] => {
 	// Load immediately with following refreshes, by default.
 	// Guideline: Treat as initializing(/Reset the fetcher) on the props changed.
-	const [fetcher, setFetcher] = useDerivedStateFromProps((): IFetcher<T, E> => notFetching ? initial : initializing, depends);
+	const [fetcher, setFetcher] = useDerivedStateFromProps((): IFetcher<T, E> => notFetching ? {...initial} : {...initializing}, depends);
 	// const error = (error: any) => setStatus({...fetcher, loading: false, data: undefined, error});
 	const fetched = (data?: T, error?: E) => setFetcher({loading: false, initializing: false, data, error, message: error ? phd.failed : (data ? phd.succeeded : phd.empty)});
 	// First call of refreshing will set the status to initializing.
