@@ -14,7 +14,11 @@ const useStyles = makeStyles({
 	ctnTable: {position: 'relative'},
 	// The border should share a same radius with the table root.
 	ctnBorder: {position: 'absolute', top: '0', bottom: '0', right: '0', left: '0', border: '1px solid #ddd', borderRadius: '6px 6px 0 0', pointerEvents: 'none'},
-	root: {minWidth: 650, borderRadius: '6px', background: '#eee'},
+	root: {
+		borderRadius: '6px', background: '#eee',
+		// @see https://www.cnblogs.com/jying/p/6289981.html
+		tableLayout: 'fixed', wordBreak: 'break-all',
+	},
 	row: {cursor: 'pointer', '&:hover': {background: '#e6e6e6'}},
 	rowEven: {background: '#fafafa'},
 	rowOdd: {background: '#f5f5f5'},
@@ -114,7 +118,7 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 					{column.render ? (
 						column.render(entry, entry[column.key], index)
 					) : (
-						column.key === KeyFieldIndex ? index + 1 : entry[column.key] || column.default || defaultValue || ''
+						column.key === KeyFieldIndex ? index + 1 : (entry[column.key] === undefined ? column.default || defaultValue || '' : entry[column.key])
 					)}
 				</TableCell>
 			))}
