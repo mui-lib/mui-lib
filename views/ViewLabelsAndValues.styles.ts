@@ -20,8 +20,7 @@ export const useStyles = makeStyles({
 		display: 'flex', justifyContent: 'flex-end', alignItems: 'center',
 	},
 	// The default padding for label and value.
-	ctnTableLabelDiv: {padding: '8px'},
-	ctnTableValueDiv: {padding: '8px'},
+	ctnTableLabelDiv: {padding: '8px', display: 'flex'},
 	//{display: 'inline-block', minWidth: '120px', color: '#000000d9'},
 	ctnTableValue: {
 		color: '#000000a6',
@@ -32,5 +31,7 @@ export const useStyles = makeStyles({
 		// On the way being professional at CSSSS :) :) :) ;).
 		// @see https://stackoverflow.com/questions/26465745/ellipsis-in-flexbox-container
 		minWidth: '1%',
+		display: 'flex', alignItems: 'center', wordBreak: 'break-all',
 	},
+	ctnTableValueDiv: {padding: '8px', display: 'flex'},
 });
