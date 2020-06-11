@@ -26,7 +26,7 @@ export const MuiAppBar = React.memo<IProps>((props: IProps) => {
 		<AppBar position='static'>
 			<Toolbar>
 				{leftDom}
-				<Typography variant="h6" color="inherit" style={{flex: 1}}>{title}</Typography>
+				<Typography variant="h6" color="inherit" style={{flex: 1, fontWeight: 'bold'}}>{title}</Typography>
 				{rightDom}
 			</Toolbar>
 		</AppBar>

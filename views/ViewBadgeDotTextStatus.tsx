@@ -9,7 +9,8 @@ const useStyles = makeStyles({
 	dot: {width: size, height: size, margin: '0 5px', borderRadius: '50%'},
 });
 
-export type IStatus = 'success' | 'warning' | 'error' | 'default' | 'processing'
+export type IStatus = 'success' | 'warning' | 'error' | 'default' | 'processing' |
+	'online' | 'offline'
 
 interface IProps {
 	status?: IStatus;
@@ -19,12 +20,14 @@ interface IProps {
 
 const getColor = (status?: IStatus): string => {
 	switch (status) {
+		case 'online':
 		case 'success':
 			return 'green';
 		case 'processing':
 			return 'blue';
 		case 'warning':
 			return 'orange';
+		case 'offline':
 		case 'error':
 			return '#c00';
 		case 'default':

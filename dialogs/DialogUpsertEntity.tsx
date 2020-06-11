@@ -10,6 +10,7 @@ import {FieldCheckbox} from '../editors/FieldCheckbox';
 import {FieldSingleSelector} from '../editors/FieldSingleSelector';
 import {FieldSwitch} from '../editors/FieldSwitch';
 import {GroupedCheckboxes} from '../editors/GroupedCheckboxes';
+import {GroupedRadioButtons} from '../editors/GroupedRadioButtons';
 import {SimpleEntityEditor} from '../editors/SimpleEntityEditor';
 import {DialogUpsertEntityTitleBar} from '../layouts/DialogUpsertEntityTitleBar';
 import {getResolvedUpsertOptions} from './helpers';
@@ -49,6 +50,7 @@ const DialogUpsertEntity = React.memo(<T extends object, P extends object, K>(pr
 					Checkbox={FieldCheckbox}
 					Switch={FieldSwitch}
 					GroupedCheckboxes={GroupedCheckboxes}
+					GroupedRadioButtons={GroupedRadioButtons}
 					Selector={FieldSingleSelector}
 				/>
 			</DialogContent>

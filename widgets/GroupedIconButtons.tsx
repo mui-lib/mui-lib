@@ -13,6 +13,7 @@ export interface IGroupedIconButton<Key = number> {
 }
 
 export const defineNewIcon = (key: number, comp: typeof IconViewList): IGroupedIconButton => ({key, TargetIcon: comp});
+export const defineNewIconButton = (key: number, comp: typeof IconViewList): IGroupedIconButton => ({key, TargetIcon: comp});
 
 interface IProps<T = number> {
 	icons: IGroupedIconButton<T>[];

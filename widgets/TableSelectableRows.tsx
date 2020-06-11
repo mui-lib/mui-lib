@@ -104,7 +104,7 @@ const TableSelectableRows = React.memo(<T extends ID>(props: IProps<T>) => {
 		align, defaultValue = '', padding,
 		border,
 	} = props;
-	const filtered = entries ? entries.filter(entry => Boolean(entry[keyEntryId])) : undefined;
+	const filtered = entries ? entries.filter(entry => entry[keyEntryId] !== undefined) : undefined;
 
 	const renderRows = (entry: T, index: number) => (
 		<TableRow key={entry[keyEntryId]} className={cls.row + ' ' + (index % 2 === 0 ? cls.rowEven : cls.rowOdd)} onClick={() => onSelectEntry(entry[keyEntryId], entry)}>

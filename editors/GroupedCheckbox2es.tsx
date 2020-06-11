@@ -36,7 +36,7 @@ export interface IState {
 //
 // Think about the differences about helper text, and placeholder, label, and error text.
 // @see https://material.io/guidelines/components/text-fields.html
-export class GroupedCheckboxes extends React.PureComponent<IProps> {
+export class GroupedCheckbox2es extends React.PureComponent<IProps> {
 	mTimer: number;
 	otherOnBlur?: (param: any) => void;
 	otherOnFocus?: (param: any) => void;
@@ -116,7 +116,7 @@ export class GroupedCheckboxes extends React.PureComponent<IProps> {
 				{...others}
 			>
 				<FormLabel component="legend">{label}</FormLabel>
-				<FormGroup row={true}>
+				<FormGroup row={false}>
 					{values.map(item => (
 						<FormControlLabel
 							key={item.value}

@@ -72,7 +72,7 @@ export const DialogConfirmButton: React.FC<IProps> = React.memo<IProps>((props: 
 	);
 
 	return (
-		<div style={{display: 'inline-block'}}>
+		<div style={{display: 'inline'}}>
 			{dialogSwitch ? renderDialog() : undefined}
 			{renderActionButton()}
 		</div>
