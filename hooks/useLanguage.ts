@@ -1,5 +1,3 @@
-//
-
 import React from 'react';
 import {ILanguagesBundle, UN_LANGUAGES} from '../resources/languages';
 
@@ -23,3 +21,4 @@ export const useLanguageContext = (): IContextLanguageValue => React.useContext(
 export const usePreferredLanguageFromContext = (): string => React.useContext(ContextLanguage).language;
 // Get the localized resources( of strings) by the preferred language from context.
 export const useLocalizedResourcesFromContext = <T>(bundle: ILanguagesBundle<T>): T => bundle[usePreferredLanguageFromContext()] || bundle.df;
+export const useLocalizedResourceFromContext = <T>(bundle: Partial<ILanguagesBundle<T>>): T => bundle[usePreferredLanguageFromContext()] || bundle.df;

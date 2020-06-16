@@ -1,16 +1,15 @@
-'use strict';
-
 import React from 'react';
+import {useForceRefresh} from './useForceRefresh';
 
 type StateSetterAction<IState> = (state: IState) => IState
 // @see https://stackoverflow.com/questions/39713349/make-all-properties-within-a-typescript-interface-optional
 type SetStateAction<IState> = IState | Partial<IState> | StateSetterAction<IState>
 
-let random = 0;
-
 // Initialize state and reset state with specific conditions.
 // MAY BE USED TO Get the derived state from the context(props/states) depends on context(props/states).
-export const useDerivedStateFromProps = <IState>(getDerivedState: () => IState, depends?: any[], obsolete?: boolean): [IState, (state: SetStateAction<IState>) => any] => {
+export const useDerivedStateFromProps = <IState>(
+	getDerivedState: () => IState, depends?: any[], obsolete?: boolean,
+): [IState, (state: SetStateAction<IState>) => any] => {
 	// Use a ref to mock the real state.
 	const ref = React.useRef<IState>({} as any as IState);
 	React.useMemo(() => {
@@ -18,7 +17,7 @@ export const useDerivedStateFromProps = <IState>(getDerivedState: () => IState, 
 		ref.current = getDerivedState();
 	}, depends);
 
-	const doForceRender = React.useState<any>()[1];
+	const doForceRender = useForceRefresh();
 	const setState = (state: SetStateAction<IState>) => {
 		if (typeof state === 'function') {
 			const setStateAction: StateSetterAction<IState> = state as StateSetterAction<IState>;
@@ -30,7 +29,7 @@ export const useDerivedStateFromProps = <IState>(getDerivedState: () => IState, 
 		} else {
 			ref.current = state as any as IState;
 		}
-		doForceRender(random++);
+		doForceRender();
 	};
 
 	return [ref.current, setState];

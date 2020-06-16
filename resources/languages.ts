@@ -38,3 +38,5 @@ export interface IUnLanguages<T = string> {
 export interface ILanguagesBundle<T> extends IUnLanguages<T> {
 	df: T;
 }
+
+export type I18N<T = string> = ILanguagesBundle<T>;
